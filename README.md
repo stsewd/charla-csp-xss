@@ -1,4 +1,4 @@
-# {Título de la charla}
+# Content Security Policy (CSP): ¿El fin de XSS?
 
 Slides de la charla dada en {evento} el {fecha}.
 
