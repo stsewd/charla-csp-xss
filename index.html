@@ -1,0 +1,197 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+  <title>Título</title>
+
+  <link rel="stylesheet" href="node_modules/reveal.js/dist/reset.css">
+  <link rel="stylesheet" href="node_modules/reveal.js/dist/reveal.css">
+  <link rel="stylesheet" href="node_modules/reveal.js/dist/theme/white.css">
+
+  <!-- Theme used for syntax highlighting of code -->
+  <link rel="stylesheet" href="node_modules/highlight.js/styles/atom-one-light.css ">
+
+  <!-- Fontawewome -->
+  <link href="node_modules/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
+</head>
+
+<body>
+  <div class="reveal">
+    <div class="slides">
+      <section>
+        <header>
+          <h1>Título</h1>
+          <h2>Subtítulo</h2>
+        </header>
+        <p>
+          <small>
+            Santos Gallegos
+            -
+            <a href="mailto:stsewd@proton.me">
+              stsewd@proton.me
+            </a>
+          </small>
+          <br>
+          <small>
+            @stsewd
+            <a href="http://github.com/stsewd"><i class="fab fa-github"></i></a>
+            <a href="http://twitter.com/stsewd"><i class="fab fa-twitter"></i></a>
+          </small>
+        </p>
+
+        <aside class="notes">
+          Notes
+        </aside>
+      </section>
+
+
+      <section>
+        <h2>$ WHOAMI</h2>
+        <ul>
+          <li>Web developer</li>
+          <li>Ethical hacker</li>
+          <li><i class="fab fa-python"></i> <i class="fab fa-rust"></i></li>
+          <li>
+            @stsewd - <a href="https://stsewd.dev/" target="_blank">https://stsewd.dev/</a>
+          </li>
+        </ul>
+
+        <p>
+          <img src="img/rtd-logo-vertical.png" width="400px">
+        </p>
+        <aside class="notes">
+          Hola, soy Santos Gallegos, soy desarrollador web, y hacker ético.
+          Contribuyo activamente a proyectos open source,
+          y he reportado vulnerabilidades en varios proyectos dentro y fuera de mi trabajo,
+          como Neovim, GitPython, django-allauth, Read the Docs, Sentry, y un montón más.
+          Principalmente trabajo con Python y Rust.
+          Actualmente trabajo en Read the Docs, soy core developer.
+          De vez en cuando también hago bug bounty.
+          Me pueden encontrar en Internet como @stsewd.
+        </aside>
+      </section>
+
+      <section>
+        <h2>Título de la sección</h2>
+
+        <ul>
+          <li>Código</li>
+          <li>Documentación</li>
+          <li>Traducciones</li>
+          <li>Reportando bugs</li>
+        </ul>
+
+        <aside class="notes">
+          Notas
+        </aside>
+      </section>
+
+      <section>
+        <h2>Ejemplo de bloque de código</h2>
+        <p>
+          Código de ejemplo
+        </p>
+
+        <pre class=""><code data-trim data-noescape class="python">
+            print("Hola mundo")
+        </code></pre>
+
+        <aside class="notes">
+          Notas
+        </aside>
+      </section>
+
+      <section data-transition="zoom">
+        <h2>Frase para terminar la charla</h2>
+        <p>
+          subtitulo de la frase
+        </p>
+
+        <img src="img/qr.png" width="200px">
+
+        <div>
+          <h6>Referencias y recursos adicionales</h6>
+          <ul>
+            <li>
+              <a href="https://example.com/">
+                Título del recurso
+              </a>
+              <br>
+              <small>
+                https://example.com/
+              </small>
+            </li>
+          </ul>
+        </div>
+        <footer class="fragment">
+          <p>
+            <small>
+              <a href="https://stsewd.dev">
+                <span>
+                  Más sobre mi
+                </span>
+                <br />
+                <span>https://stsewd.dev</span>
+              </a>
+            </small>
+          </p>
+
+          <p>
+            <small>
+              <a href="https://github.com/stsewd/charla-xxx">
+                <span>
+                  Código fuente <i class="fas fa-code-branch"></i>
+                </span>
+                <br />
+                <span>https://github.com/stsewd/charla-xxx</span>
+              </a>
+            </small>
+          </p>
+
+          <p>
+            <small>
+              @stsewd
+              <a href="http://github.com/stsewd"><i class="fab fa-github"></i></a>
+              <a href="http://twitter.com/stsewd"><i class="fab fa-twitter"></i></a>
+            </small>
+          </p>
+        </footer>
+
+        <aside class="notes">
+          Ahí les dejo el enlace a esta presentación y a mi blog donde a veces escribo cosas. y también estan las vulnerabilidades
+
+          Eso fue todo por hoy, espero hayan aprendido algo nuevo. Ahora vamos a las
+          preguntas. Si algo no se entendió, es probablemente mi culpa, no lo expliqué
+          bien, así que siéntanse libres de preguntar algo incluso si ya lo
+          di en la presentación, y lo voy a tratar de aclarar.
+
+          En mi blog también pueden encontrar una lista de las vulnerabilidades
+          públicas que reportado, podemos hablar sobre eso más luego si desean.
+        </aside>
+      </section>
+    </div>
+  </div>
+
+  <script src="node_modules/reveal.js/dist/reveal.js"></script>
+  <script src="node_modules/reveal.js/plugin/notes/notes.js"></script>
+  <script src="node_modules/reveal.js/plugin/markdown/markdown.js"></script>
+  <script src="node_modules/reveal.js/plugin/highlight/highlight.js"></script>
+  <script>
+    // More info about initialization & config:
+    // - https://revealjs.com/initialization/
+    // - https://revealjs.com/config/
+    Reveal.initialize({
+      hash: true,
+      maxScale: 0.7,
+      width: 1060,
+      height: 800,
+      // Learn about plugins: https://revealjs.com/plugins/
+      plugins: [RevealMarkdown, RevealHighlight, RevealNotes]
+    });
+  </script>
+</body>
+
+</html>
