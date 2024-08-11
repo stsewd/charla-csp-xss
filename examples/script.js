@@ -28,4 +28,10 @@ window.onload = function () {
   toggle.addEventListener('click', function () {
     toggleDarkMode();
   });
+
+  document.addEventListener("securitypolicyviolation", (e) => {
+    const error = `Blocked URI: ${e.blockedURI}\nViolated Directive: ${e.violatedDirective}\nDocument URI: ${e.documentURI}\nEffective Directive: ${e.effectiveDirective}\nSample: ${e.sample}\n`;
+    const log = document.getElementById("errors");
+    log.innerText = error;
+  });
 }
