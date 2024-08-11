@@ -2,6 +2,8 @@ from pathlib import Path
 from jinja2 import Template
 from textwrap import dedent
 
+BASE_PATH = Path(__file__).parent
+
 
 def get_examples():
     csp = "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://*.google.com https://*.gstatic.com https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js;"
@@ -75,7 +77,7 @@ def get_examples():
         "vulnerable": True,
         "payload": dedent(
             """
-            <script src="https://stsewd.dev/_/redirect/?https://cdn.jsdelivr.net/gh/stsewd/charla-csp-xss@main/js/test.js"></script>
+            <script src="/_/redirect/?https://cdn.jsdelivr.net/gh/stsewd/charla-csp-xss@main/js/test.js"></script>
             """
         ).strip("\n"),
     }
@@ -108,7 +110,7 @@ def get_examples():
 
 
 def get_template(name):
-    content = Path(name).read_text()
+    content = (BASE_PATH / name).read_text()
     return Template(content, autoescape=True)
 
 
@@ -135,7 +137,7 @@ def main():
 
         template = get_template("template.html")
         output = template.render(**context)
-        Path(f"../examples/{section_id}.html").write_text(output)
+        (BASE_PATH / f"../examples/{section_id}.html").write_text(output)
 
 
 if __name__ == "__main__":
