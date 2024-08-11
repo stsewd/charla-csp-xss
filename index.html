@@ -2,6 +2,8 @@
 <html>
 
 <head>
+  <!-- vim: set ft=html: -->
+  <!-- Force Neovim to use HTML as filetype, the `@for` from `@fortawesome` makes it think we are using angular...  -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
@@ -12,10 +14,10 @@
   <link rel="stylesheet" href="node_modules/reveal.js/dist/theme/white.css">
 
   <!-- Theme used for syntax highlighting of code -->
-  <link rel="stylesheet" href="node_modules/highlight.js/styles/atom-one-light.css ">
+  <link rel="stylesheet" href="node_modules/highlight.js/styles/atom-one-light.css">
 
   <!-- Fontawewome -->
-  <link href="node_modules/@fontawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
+  <link href="node_modules/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
 </head>
 
 <body>
@@ -23,8 +25,8 @@
     <div class="slides">
       <section>
         <header>
-          <h1>Título</h1>
-          <h2>Subtítulo</h2>
+          <h1>Content Security Policy</h1>
+          <h2>¿El fin de XSS?</h2>
         </header>
         <p>
           <small>
@@ -47,6 +49,30 @@
         </aside>
       </section>
 
+      <section>
+        <h1>NO</h1>
+
+        <p>
+          Si la política es lo suficientemente restrictiva, será difícil pero no imposible llevar a cabo un ataque XSS.
+        </p>
+        <p>
+          Inyectar HTML sin ejecutar JS puede tener impacto en la seguridad de la página,
+          y es algo que CSP no puede prevenir.
+        </p>
+
+        <aside class="notes">
+          No, pero si la política es lo suficientemente restrictiva,
+          será muy difícil (tal vez imposible) llevar a cabo un ataque XSS.
+          Pero aún así, existen varios bypasses que pueden ser explotados.
+          Usualmente cuando existe una vulnerabilidad XSS,
+          es debido a que un atacante puede inyectar código HTML en el sitio,
+          y eso aún tiene impacto en la seguridad de la página, y no es algo que CSP pueda prevenir
+          (aún).
+
+          Si no entendieron nada de lo que dije, no se preocupen, vamos
+          a ver más en detalle por qué he llegado a esta conclusión.
+        </aside>
+      </section>
 
       <section>
         <h2>$ WHOAMI</h2>
@@ -75,17 +101,238 @@
       </section>
 
       <section>
-        <h2>Título de la sección</h2>
+        <h2>"Experto" en CSP y XSS</h2>
+
+        <img src="img/experto.jpg" alt="">
+
+        <aside class="notes">
+          Ok, ya les conté un poco sobre mi, y parece que sé algo de seguridad web.
+          Pero qué me hace un "experto" en CSP y XSS?
+
+          Pues me puse a investigar anoche mientras preparaba esta charla.
+        </aside>
+      </section>
+
+      <section>
+        <h2>Mi experiencia con CSP</h2>
 
         <ul>
-          <li>Código</li>
-          <li>Documentación</li>
-          <li>Traducciones</li>
-          <li>Reportando bugs</li>
+          <li>Había escuchado sobre CSP</li>
+          <li>En el trabajo me tocó iniciar la implementación de CSP</li>
+          <li>Bug bounty: XSS en una web con CSP usando nonces. No pude ejecutar JS, pero pude demostrar impacto</li>
+          <li>Bug bounty: XSS en una web con CSP, muy restrictiva pero sin nonces. Puede hacer un bypass y ejeuctar JS</li>
+          <li>Esta charla</li>
         </ul>
 
         <aside class="notes">
-          Notas
+          No, mi experiencia con CSP es algo así.
+          Había escuchado sobre CSP, tenía una idea muy básica de lo que era, y cómo funcionaba.
+          Luego en el trabajo me tocó iniciar la implementación de CSP en nuestra web, en modo report-only, por ahora.
+          Para ello tuve que investigar más sobre CSP, y los errores y bypasses más comunes.
+
+          Y coincidentemente, unas semanas después, encontré un stored XSS en un web de un programa de bug bounty.
+          Resulta que la web tenía una política muy restrictiva y usaban un nonce,
+          luego de varios intentos, no pude encontrar un bypass para ejecutar JS,
+          pero pude demostrar una manera de robar credenciales usando inyectando HTML sin ejecutar JS.
+
+          Unas semanas después, encontré otro XSS en una web de un programa de bug bounty.
+          La web tenía una política muy restrictiva, pero no usaban nonces,
+          así que decidí investigar un poco más, y pude bypassar la política y ejecutar JS
+          con la ayuda de otra vulnerabilidad que encontré en la web.
+
+          Y por supuesto, tuve que investigar más sobre CSP para preparar esta charla.
+
+          Así que no, no soy un experto, espero que al menos la mitad de lo que diga sea verdad.
+          Pero si he tenido experiencia directa con CSP y XSS.
+          Al final les voy a dejar links a recursos que me ayudaron a entender mejor el tema.
+        </aside>
+      </section>
+
+      <section>
+        <h2>¿Qué es CSP?</h2>
+        <h3>Content-Security-Policy</h3>
+        <p>
+          Es una capa de seguridad adicional que ayuda a detectar y mitigar ciertos tipos de ataques,
+          incluyendo Cross Site Scripting (XSS) y ataques de inyección de datos.
+        </p>
+
+        <small>
+          <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP">
+            https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP
+          </a>
+        </small>
+
+        <aside class="notes">
+          Les he estado mencionando cosas como CSP, XSS, nonces,
+          y tal vez se estén preguntando qué diablos estoy diciendo.
+
+          Content security policy, o CSP, es una capa de seguridad adicional que ayuda a detectar y mitigar ciertos tipos de ataques,
+          incluyendo Cross Site Scripting (XSS) y ataques de inyección de datos.
+
+        </aside>
+      </section>
+
+      <section>
+        <h2>
+          ¿Cómo funciona CSP?
+        </h2>
+
+        <p>
+          Mediante el header <code>Content-Security-Policy</code> que el servidor envía en la respuesta HTTP,
+          este header contiene una serie de reglas que le indican al navegador qué recursos puede cargar y ejecutar en la página web.
+        </p>
+
+        <aside class="notes">
+          Esto se hace mediante el header Content-Security-Policy que el servidor envía en la respuesta HTTP,
+          este header contiene una serie de reglas que le indican al navegador qué recursos puede cargar y ejecutar en la página web.
+        </aside>
+      </section>
+
+      <section>
+        <h2>Sintaxis</h2>
+
+        <p>
+          <strong>Content-Security-Policy:</strong> &lt;directive&gt; &lt;value&gt;; &lt;directive&gt;
+        </p>
+
+        <aside class="notes">
+          La sintaxis de CSP es la siguiente,
+          tenemos el header Content-Security-Policy, seguido de una serie de directivas y valores.
+          Cada directiva está separada por un punto y coma, y cada directiva puede tener uno o más valores separados por un espacio.
+          o puede no tener valores.
+        </aside>
+      </section>
+
+      <section>
+        <h2>Sintaxis</h2>
+        <pre class=""><code data-trim data-noescape class="http">
+          Content-Security-Policy:
+            default-src 'self' example.com *.example.com;
+            upgrade-insecure-requests;
+        </code></pre>
+        <aside class="notes">
+          Aquí tenemos un ejemplo de una política CSP,
+          ahí vemos la directiva default-src,
+          con varios valores, y luego la directiva upgrade-insecure-requests,
+          la cual no tiene valores.
+
+          El ejemplo está separado en varias líneas para que sea más fácil de leer,
+          pero en la práctica, todo va en una sola línea.
+        </aside>
+      </section>
+
+      <section>
+        <h2>Directivas</h2>
+        <ul>
+          <li>Fetch directives: qué recursos se pueden cargar (scripts, imágenes, etc)</li>
+          <li>Document directives: aspectos de un documento (HTML)</li>
+          <li>Navigation directives: orígenes a los que un usuario puede navegar o enviar formularios</li>
+          <li>Reporting directives: a dónde se envían los reportes de violaciones de CSP</li>
+        </ul>
+        <aside class="notes">
+          Las directivas de CSP se dividen en varias categorías,
+          Fetch directives, que controlan qué recursos se pueden cargar, como scripts, imágenes, CSS, qué APIs pueden ser usadas.
+          Document directives, controlan aspectos de un documento HTML.
+          Navigation directives, que controlan a qué orígenes un usuario puede navegar o enviar formularios.
+          Y Reporting directives, que controlan a dónde se envían los reportes de violaciones de CSP.
+        </aside>
+      </section>
+
+      <section>
+        <h2>Valores</h2>
+        <aside class="notes">
+        </aside>
+      </section>
+
+      <section>
+        <h2>Valores: keywords</h2>
+      </section>
+
+      <section>
+        <h2>Valores: hosts</h2>
+      </section>
+
+      <section>
+        <h2>Valores: nonce y hashes</h2>
+      </section>
+
+      <section>
+        <h2>Directivas más comunes</h2>
+        <aside class="notes">
+        </aside>
+      </section>
+
+      <section>
+        <h2>Previniendo ataques XSS</h2>
+        <ul>
+          <li>Lista de hosts, protocolos, y paths permitidos</li>
+          <li>Nonce y hashes</li>
+        </ul>
+        <aside class="notes">
+        </aside>
+      </section>
+
+      <section>
+        <h2>Previniendo ataques XSS</h2>
+        <p>No usar JavaScript</p>
+        <p>
+          Content-Security-Policy: script-src 'none'
+        </p>
+
+        <aside class="notes">
+        </aside>
+      </section>
+
+      <section>
+        <h2>CSP en acción</h2>
+        <h4>
+          Una triste historia
+        </h4>
+        <p>
+          Tenemos una web que lleva varios años en producción, sin un mantenimiento constante,
+          y con un montón de código JavaScript inline.
+        </p>
+        <img src="img/imagination.jpg" alt="">
+        <aside class="notes">
+          Imaginemos que tenemos una web que ya lleva varios años en producción, y sin un mantenimiento constante,
+          y tiene un montón de código JavaScript inline.
+        </aside>
+      </section>
+
+      <section>
+        <h2>La política (im)perfecta</h2>
+        <pre class=""><code data-trim data-noescape class="http">
+          Content-Security-Policy:
+            script-src
+              'self'
+              'unsafe-inline'
+              https://*.google.com
+              https://*.gstatic.com
+              https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js
+              'unsafe-eval'
+        </code></pre>
+      </section>
+
+      <section>
+        <h2>La política (im)perfecta</h2>
+
+        <img src="img/csp-evaluator.png" alt="">
+        <small>
+          <a href="https://csp-evaluator.withgoogle.com/">https://csp-evaluator.withgoogle.com/</a>
+        </small>
+      </section>
+
+      <section>
+        <h2>Inline JS</h2>
+
+        <pre class=""><code data-trim data-noescape class="html">
+          &lt;script&gt;
+            alert(document.domain)
+          &lt;/script&gt;
+        </code></pre>
+
+        <aside class="notes">
+
         </aside>
       </section>
 
