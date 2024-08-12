@@ -82,7 +82,18 @@ def get_examples():
         ).strip("\n"),
     }
 
-    example_0x = {
+    csp = csp.replace(
+        "https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.min.js",
+        "https://static.example.com/js/jquery@3.6.4/dist/jquery.min.js",
+    )
+
+    example_08 = {
+        **example_07,
+        "vulnerable": False,
+        "csp": csp,
+    }
+
+    example_09 = {
         "title": "CSP bypass, AngularJS está de vuelta!",
         "csp": csp,
         "vulnerable": True,
@@ -97,6 +108,39 @@ def get_examples():
         ).strip("\n"),
     }
 
+    nonce = "8IBTHwOdqNKAWeKl7plt8g=="
+    sha256 = "opnq3UrQLt34nD/Io3x4OQXex7rVCcRNO2/Dym9R8ro="
+    csp = f"script-src 'nonce-{nonce}' 'sha256-{sha256}';"
+
+    example_10 = {
+        "title": "CSP usando un nonce y hash",
+        "csp": csp,
+        "vulnerable": False,
+        "nonce": nonce,
+        "payload": dedent(
+            f"""
+            <script nonce="{nonce}">
+              alert("Este script si está permitido")
+            </script>
+
+            <script>alert("Inline script correspondiente al hash!")</script>
+            """
+        ).strip("\n"),
+    }
+
+    example_11 = {
+        **example_10,
+        "payload": dedent(
+            f"""
+            <script nonce="abc1234">
+              alert("Este script si está permitido")
+            </script>
+
+            <script>alert("Inline script correspondiente al hash!");</script>
+            """
+        ).strip("\n"),
+    }
+
     return [
         example_01,
         example_02,
@@ -105,7 +149,10 @@ def get_examples():
         example_05,
         example_06,
         example_07,
-        example_0x,
+        example_08,
+        example_09,
+        example_10,
+        example_11,
     ]
 
 

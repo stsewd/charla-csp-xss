@@ -10,11 +10,11 @@
   <link rel="stylesheet" href="../node_modules/@picocss/pico/css/pico.blue.min.css">
   <link rel="stylesheet" href="../node_modules/@picocss/pico/css/pico.colors.min.css">
 
-  <script src="../node_modules/@highlightjs/cdn-assets/highlight.min.js"></script>
+  <script src="../node_modules/@highlightjs/cdn-assets/highlight.min.js" {% if nonce %}nonce={{ nonce }}{% endif %}></script>
   <link rel="stylesheet" href="../node_modules/@highlightjs/cdn-assets/styles/dark.min.css">
 
   <meta id="csp" http-equiv="Content-Security-Policy" content="{{ csp }}">
-  <script src="script.js"></script>
+  <script src="script.js" {% if nonce %}nonce={{ nonce }}{% endif %}></script>
   <title>{{ section_id }} - {{ title }}</title>
 </head>
 

