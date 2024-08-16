@@ -14,7 +14,7 @@
   <link rel="stylesheet" href="node_modules/reveal.js/dist/theme/white.css">
 
   <!-- Theme used for syntax highlighting of code -->
-  <link rel="stylesheet" href="node_modules/highlight.js/styles/atom-one-light.css">
+  <link rel="stylesheet" href="node_modules/@highlightjs/cdn-assets/styles/atom-one-light.css">
 
   <!-- Fontawewome -->
   <link href="node_modules/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
@@ -86,7 +86,7 @@
         </ul>
 
         <p>
-          <img src="img/rtd-logo-vertical.png" width="400px">
+          <img src="img/rtd-logo-vertical.png" height="75px">
         </p>
         <aside class="notes">
           Hola, soy Santos Gallegos, soy desarrollador web, y hacker ético.
@@ -103,7 +103,7 @@
       <section>
         <h2>"Experto" en CSP y XSS</h2>
 
-        <img src="img/experto.jpg" alt="">
+        <img src="img/experto.jpg" alt="" class="r-stretch">
 
         <aside class="notes">
           Ok, ya les conté un poco sobre mi, y parece que sé algo de seguridad web.
@@ -249,18 +249,57 @@
 
       <section>
         <h2>Valores: keywords</h2>
+        <ul>
+          <li><code>'none'</code> - nada está permitido</li>
+          <li><code>'self'</code> - sólo recursos del mismo origen están permitidos</li>
+          <li><code>'unsafe-inline'</code> - código inline está permitido, CSS o JS</li>
+        </ul>
+
+        <aside class="notes">
+          Son palabras que van entre comillas simples, las más comunes que tenemos son:
+
+          - 'none': no se permite nada.
+          - 'self': sólo se permite si es el mismo origen.
+          - 'unsafe-inline': se permite código inline, como los atributos style y JavaScript inline.
+        </aside>
       </section>
 
       <section>
         <h2>Valores: hosts</h2>
+        <ul>
+          <li><code>example.com</code> - host específico</li>
+          <li><code>*.example.com</code> - wildcard</li>
+          <li><code>https://example.com</code> - protocolo específico</li>
+          <li><code>https://example.com/path/to/file</code> - path específico</li>
+          <li><code>https://example.com/path/to/dir/</code> - directorio</li>
+          <li><code>https:</code> - protocolo</li>
+        </ul>
       </section>
 
       <section>
         <h2>Valores: nonce y hashes</h2>
+        <ul>
+          <li><code>'nonce-{random-value}'</code> - nonce</li>
+          <li><code>'sha{algorithm}-{hash}'</code> - hash</li>
+        </ul>
+
+        <p><strong>Ejemplos:</strong></p>
+
+        <ul>
+          <li><code>'nonce-8IBTHwOdqNKAWeKl7plt8g=='</code></li>
+          <li><code>'sha256-opnq3UrQLt34nD/Io3x4OQXex7rVCcRNO2/Dym9R8ro='</code></li>
+        </ul>
       </section>
 
       <section>
         <h2>Directivas más comunes</h2>
+        <ul>
+          <li><code>default-src</code></li>
+          <li><code>script-src</code></li>
+          <li><code>style-src</code></li>
+          <li><code>img-src</code></li>
+          <li><code>connect-src</code></li>
+        </ul>
         <aside class="notes">
         </aside>
       </section>
@@ -295,7 +334,16 @@
           Tenemos una web que lleva varios años en producción, sin un mantenimiento constante,
           y con un montón de código JavaScript inline.
         </p>
-        <img src="img/imagination.jpg" alt="">
+        <p>
+          <small>
+            <em>
+              <strong>
+                Cuálquier parecido con la realidad es pura coincidencia.
+              </strong>
+            </em>
+          </small>
+        </p>
+        <img src="img/imagination.jpg" alt="" class="r-stretch">
         <aside class="notes">
           Imaginemos que tenemos una web que ya lleva varios años en producción, y sin un mantenimiento constante,
           y tiene un montón de código JavaScript inline.
@@ -328,6 +376,20 @@ function isEven(n) {
               https://*.gstatic.com
               https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js;
         </code></pre>
+        <aside class="notes">
+          Lo que esta política nos dice es:
+
+          - Se permite ejecutar código JavaScript si es del mismo origen.
+          - Se permite código JavaScript inline (recordemos que la página web tiene mucho código JS inline).
+          - Se permite el uso de la función eval, porque tenemos librerías que lo usan (angular.js)
+          - Se permite cargar recursos de cualquier subdominio de google.com y gstatic.com,
+          ya que estamos usando reCAPTCHA.
+          Y por su puesto, confiamos en que Google no va a servir código malicioso.
+          - Se permite cargar angular.js del CDN de Google.
+
+          Con esta política la página web funciona correctamente.
+          Pero no es muy restrictiva.
+        </aside>
       </section>
 
       <section>
@@ -337,6 +399,76 @@ function isEven(n) {
         <small>
           <a href="https://csp-evaluator.withgoogle.com/">https://csp-evaluator.withgoogle.com/</a>
         </small>
+
+        <aside class="notes">
+          Y esto lo podemos comprobar con CSP Evaluator de Google.
+          Como vemos, varias cosas están en rojo, ese color no es muy bueno.
+          Tenemos menciones de `unsafe-inline`, `unsafe-eval`, y JSON-P, AngularJS.
+        </aside>
+      </section>
+
+      <section>
+        <h2>¿HTML injection?</h2>
+
+        <pre class=""><code data-trim data-noescape class="python">
+          @register.filter
+          def gravatar(user):
+              img = get_gravatar_image(user.email)
+              return mark_safe(f'&lt;img src="{img}" alt="{user.email}"&gt;')
+        </code></pre>
+      </section>
+
+      <section>
+        <h2>Email address</h2>
+
+        <p>
+          &lt;script&gt;alert(document.domain)&lt;/script&gt;@example.com
+        </p>
+
+        <aside class="notes">
+          Esta dirección de correo electrónico no es válida.
+        </aside>
+      </section>
+
+      <section>
+        <h2>El atacante</h2>
+        <img src="img/script-kiddie.jpg" alt="" class="r-stretch">
+      </section>
+
+      <section>
+        <h2>Email address 101</h2>
+
+        <p>
+          local-part@domain
+        </p>
+
+        <blockquote>
+          The local-part of the email address may be unquoted or may be enclosed in quotation marks.
+        </blockquote>
+
+        <p>
+          <small>
+            <a href="https://en.wikipedia.org/wiki/Email_address">https://en.wikipedia.org/wiki/Email_address</a>
+          </small>
+        </p>
+      </section>
+
+      <section>
+        <h2>HTML injection</h2>
+
+        <p>"&lt;script&gt;alert(document.domain)&lt;/script&gt;"@example.com</p>
+
+        <p>
+          <strong>
+            Soportan quoted-string como local-part:
+          </strong>
+        </p>
+
+        <ul>
+          <li>validator.js</li>
+          <li>Django</li>
+        </ul>
+
       </section>
 
       <section>
@@ -355,13 +487,12 @@ function isEven(n) {
         </p>
 
         <aside class="notes">
-
         </aside>
       </section>
 
       <section>
         <h2>Sitio libre de inline JS</h2>
-        <img src="img/later-six-months.jpg" alt="">
+        <img src="img/later-six-months.jpg" alt="" class="r-stretch">
 
         <aside class="notes">
           Luego de un duro trabajo, logramos limpiar el sitio de código JavaScript inline.
@@ -370,6 +501,10 @@ function isEven(n) {
           Resulta que es una funcionalidad muy útil, y ahora tiene más de 250K descargas semanales,
           y claro, también publicamos isEven como otro paquete.
         </aside>
+      </section>
+
+      <section>
+        <img src="img/is-odd.png" alt="" class="r-stretch" />
       </section>
 
       <section>
@@ -411,7 +546,7 @@ function isEven(n) {
 
       <section>
         <h2>Sitio libre AngularJS</h2>
-        <img src="img/later-eternity.jpg" alt="">
+        <img src="img/later-eternity.jpg" alt="" class="r-stretch">
 
         <aside class="notes">
           Luego de un duro trabajo, logramos limpiar el sitio de AngularJS,
@@ -445,7 +580,68 @@ function isEven(n) {
       </section>
 
       <section>
-        <h2>JSONP</h2>
+        <h2>JSON-P</h2>
+        <p>
+          JSON with padding, is a historical JavaScript technique for requesting data by loading a
+          <code>&lt;script&gt;</code> element.
+          JSON-P enables sharing of data bypassing same-origin policy.
+        </p>
+
+        <small>
+          <a href="https://en.wikipedia.org/wiki/JSONP">https://en.wikipedia.org/wiki/JSONP</a>
+        </small>
+      </section>
+
+      <section>
+        <h2>Cross-Origin Resource Sharing</h2>
+        <h3>(CORS)</h3>
+        <pre><code class="http">Access-Control-Allow-Origin: *</code></pre>
+
+        <p>
+          <small>
+            <em>
+              <strong>
+                No intenten esto en casa.
+              </strong>
+            </em>
+          </small>
+        </p>
+
+        <p>
+          <small>
+            <a
+              href="https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS">https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS</a>
+          </small>
+        </p>
+
+        <aside class="notes">
+          Para los que no han usado JSON-P,
+          tal vez hayan escuchado de CORS, Cross-Origin Resource Sharing,
+          Cuando intentan usar una API de un sitio en otro sitio, y el navegador bloquea la petición
+          con un error de CORS. Y Usualmente lo que hacen las personas para "arreglar" esto es
+          agregar el header Access-Control-Allow-Origin: * en la respuesta HTTP.
+
+          Esto es lo equivalente para lo se usaba JSON-P.
+          Una técnica de hace medio siglo, según la Wikipedia.
+        </aside>
+      </section>
+
+      <section>
+        <h2>JSON-P</h2>
+        <p>
+          https://example.com/users/1234?callback=parseResponse
+        </p>
+        <pre><code class="javascript">parseResponse({"Name": "Clem", "Id": 1234, "Rank": 7});</code></pre>
+
+        <p>
+          https://example.com/users/1234?callback=alert(document.domain)//
+        </p>
+        <pre><code class="javascript">alert(document.domain)//({"Name": "Clem", "Id": 1234, "Rank": 7});</code></pre>
+
+      </section>
+
+      <section>
+        <h2>JSON-P</h2>
 
         <pre class=""><code data-trim data-noescape class="html">
 &lt;script
@@ -465,12 +661,12 @@ function isEven(n) {
       </section>
 
       <section>
-        <h2>Sitio libre de JSONP</h2>
-        <img src="img/later-several-days.png" alt="">
+        <h2>Sitio libre de JSON-P</h2>
+        <img src="img/later-several-days.png" alt="" class="r-stretch">
       </section>
 
       <section>
-        <h2><s>JSONP</s></h2>
+        <h2><s>JSON-P</s></h2>
 
         <pre class=""><code data-trim data-noescape class="http">
           Content-Security-Policy:
@@ -489,6 +685,18 @@ function isEven(n) {
 
         <aside class="notes">
         </aside>
+      </section>
+
+      <section>
+        <h2>Open redirect</h2>
+
+        <p>
+          https://example.com/login/?next=https://evil.example.com
+        </p>
+      </section>
+
+      <section>
+
       </section>
 
       <section>
@@ -626,7 +834,7 @@ function isEven(n) {
     // - https://revealjs.com/config/
     Reveal.initialize({
       hash: true,
-      maxScale: 0.7,
+      maxScale: 1,
       width: 1060,
       height: 800,
       // Learn about plugins: https://revealjs.com/plugins/
