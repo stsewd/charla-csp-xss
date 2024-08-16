@@ -91,7 +91,7 @@ def get_examples():
             "vulnerable": False,
             "payload": dedent(
                 """
-            <script src="/_/redirect/?https://evil.example.com/path/to/evil.js"></script>
+            <script src="/_/redirect/?https://example.com/path/to/evil.js"></script>
             """
             ).strip("\n"),
         }
