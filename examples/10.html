@@ -10,22 +10,22 @@
   <link rel="stylesheet" href="../node_modules/@picocss/pico/css/pico.blue.min.css">
   <link rel="stylesheet" href="../node_modules/@picocss/pico/css/pico.colors.min.css">
 
-  <script src="../node_modules/@highlightjs/cdn-assets/highlight.min.js" nonce=8IBTHwOdqNKAWeKl7plt8g==></script>
+  <script src="../node_modules/@highlightjs/cdn-assets/highlight.min.js" ></script>
   <link rel="stylesheet" href="../node_modules/@highlightjs/cdn-assets/styles/dark.min.css">
 
-  <meta id="csp" http-equiv="Content-Security-Policy" content="script-src &#39;nonce-8IBTHwOdqNKAWeKl7plt8g==&#39; &#39;sha256-opnq3UrQLt34nD/Io3x4OQXex7rVCcRNO2/Dym9R8ro=&#39;;">
-  <script src="script.js" nonce=8IBTHwOdqNKAWeKl7plt8g==></script>
-  <title>10 - CSP usando un nonce y hash</title>
+  <meta id="csp" http-equiv="Content-Security-Policy" content="script-src &#39;self&#39; https://www.google.com/recaptcha/ https://www.gstatic.com/recaptcha/ https://static.example.com/js/jquery@3.6.4/dist/jquery.min.js;">
+  <script src="script.js" ></script>
+  <title>10 - CSP bypass, AngularJS está de vuelta!</title>
 </head>
 
 <body>
   <main class="container">
     <hgroup>
       <h1>
-        10 - CSP usando un nonce y hash
+        10 - CSP bypass, AngularJS está de vuelta!
       </h1>
       
-        <p class="pico-background-jade-500">Ejemplo no vulnerable</p>
+        <p class="pico-background-red-500">Ejemplo vulnerable</p>
       
     </hgroup>
 
@@ -71,11 +71,11 @@
       </ul>
     </nav>
 
-    <template id="payload-template"><script nonce="8IBTHwOdqNKAWeKl7plt8g==">
-  alert("Este script si está permitido")
-</script>
+    <template id="payload-template"><script src='https://www.google.com/recaptcha/about/js/main.min.js'></script>
 
-<script>alert("Inline script correspondiente al hash!")</script></template>
+<div ng-app ng-csp>
+  <input ng-focus="$event.composedPath()|orderBy:'alert(document.domain)'" value="Click me!">
+</div></template>
   </main>
 </body>
 
