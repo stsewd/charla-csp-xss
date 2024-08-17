@@ -23,6 +23,7 @@
   cursor: pointer;
 }
 
-.borderless  tr  td, .borderless {
+.borderless tr td,
+.borderless {
   border: none;
 }
