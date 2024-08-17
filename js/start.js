@@ -21,3 +21,11 @@ showShortcutsElements.forEach(function (element) {
     event.preventDefault();
   });
 });
+
+const showSearchElements = document.querySelectorAll('.show-search');
+showSearchElements.forEach(function (element) {
+  element.addEventListener('click', function (event) {
+    Reveal.getPlugin("search").open();
+    event.preventDefault();
+  });
+});

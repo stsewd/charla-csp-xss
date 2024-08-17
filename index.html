@@ -32,39 +32,70 @@
           Antes de empezar...
         </h2>
 
-        <ul>
-          <li>
-            <a href="?view=scroll">
-              Scroll view
-              <i class="fa-solid fa-mobile-screen"></i>
-            </a>
-          </li>
-          <li>
-            <a href="?view=fragment">
-              Fragment view
-              <i class="fa-solid fa-list"></i>
-            </a>
-            <small>(default)</small>
-          </li>
-          <li>
-            <a href="#" class="activate-speaker-mode">
-              Speaker mode
-              <i class="fa-regular fa-comments"></i>
-            </a>
-          </li>
-          <li>
-            <a href="?print-pdf">
-              Print mode
-              <i class="fa-solid fa-print"></i>
-            </a>
-          </li>
-          <li>
-            <a href="#" class="show-shortcuts">
-              Shortcuts
-              <i class="fa-regular fa-circle-question"></i>
-            </a>
-          </li>
-        </ul>
+        <table class="borderless">
+          <tr>
+            <td>
+              <a href="?view=scroll">
+                Scroll view
+                <i class="fa-solid fa-mobile-screen"></i>
+              </a>
+              <br>
+              <small>
+                Si estás en un dispositivo móvil.
+              </small>
+            </td>
+            <td>
+              <a href="?view=fragment">
+                Fragment view
+                <i class="fa-solid fa-list"></i>
+              </a>
+              <br>
+              <small>
+                Tal como se ve en la presentación.
+              </small>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <a href="#" class="activate-speaker-mode">
+                Speaker mode
+                <i class="fa-regular fa-comments"></i>
+              </a>
+              <br>
+              <small>
+                Para ver las notas del presentador.
+              </small>
+            </td>
+            <td>
+              <a href="?print-pdf">
+                Print mode
+                <i class="fa-solid fa-print"></i>
+              </a>
+              <br>
+              <small>
+                Exportar a PDF.
+              </small>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <a href="#" class="show-search">
+                Search
+                <i class="fa-solid fa-magnifying-glass"></i>
+              </a>
+              <br>
+              <small>
+                Busca en la presentación (Ctrl + Shift + F).
+              </small>
+            </td>
+            <td>
+              <a href="#" class="show-shortcuts">
+                Shortcuts
+                <i class="fa-regular fa-circle-question"></i>
+              </a>
+            </td>
+          </tr>
+        </table>
 
         <p>
           Navega usando
@@ -108,7 +139,7 @@
         </p>
         <p>
           Inyectar HTML sin ejecutar JS puede tener impacto en la seguridad de la página,
-          y es algo que CSP no puede prevenir.
+          y es algo que CSP no siempre puede prevenir.
         </p>
 
         <aside class="notes">
@@ -482,13 +513,14 @@
         </p>
 
         <blockquote>
-          The local-part of the email address may be unquoted or may be enclosed in quotation marks.r-stretch
+          The local-part of the email address may be unquoted or may be enclosed in quotation marks.
         </blockquote>
 
         <p>
           <small>
-            <a href="https://en.wikipedia.org/wiki/Email_address"
-              target="_blank">https://en.wikipedia.org/wiki/Email_address</a>
+            <a href="https://en.wikipedia.org/wiki/Email_address" target="_blank">
+              https://en.wikipedia.org/wiki/Email_address
+            </a>
           </small>
         </p>
       </section>
@@ -787,7 +819,9 @@
         <h2>Open redirect</h2>
 
         <pre class=""><code data-trim data-noescape class="html">
-&lt;script&NewLine;  src&equals;&quot;&sol;&lowbar;&sol;redirect&sol;&quest;https&colon;&sol;&sol;cdn&period;jsdelivr&period;net&sol;gh&sol;stsewd&sol;charla-csp-xss&commat;main&sol;js&sol;test&period;js&quot;&gt;&NewLine;&lt;&sol;script&gt;
+          &lt;script
+            src&equals;&quot;&sol;&lowbar;&sol;redirect&sol;&quest;https&colon;&sol;&sol;cdn&period;jsdelivr&period;net&sol;gh&sol;stsewd&sol;charla-csp-xss&commat;main&sol;js&sol;test&period;js&quot;&gt;
+          &lt;&sol;script&gt;
         </code></pre>
 
         <p>
@@ -888,7 +922,7 @@
 
       <section>
         <h2>Ahora si estamos a salvo!</h2>
-        <h3>...o no?</h3>
+        <img src="img/safe-with-nonces.jpg" class="r-stretch">
       </section>
 
       <section>
@@ -943,21 +977,12 @@
           &lt;script nonce&equals;&quot;abc&quot; src&equals;&quot;https&colon;&sol;&sol;example&period;com&sol;evil&period;js&quot;&gt;
           &lt;&sol;script&gt;&quot; src&equals;&quot;good&period;js&quot;&gt;&lt;&sol;script&gt;
         </code></pre>
-      </section>
 
-      <section>
-        <h2>Injection point antes del nonce</h2>
-        <p>Nonce semi-dinámico, el nonce es único por usuario o sesión en lugar de por request.</p>
-
-        <pre class=""><code data-trim data-noescape class="html">
-          &lcub;INJECTION&rcub;
-          &lt;script nonce&equals;&quot;abc&quot; src&equals;&quot;good&period;js&quot;&gt;&lt;&sol;script&gt;
-        </code></pre>
-
-        <pre class=""><code data-trim data-noescape class="html">
-          &lt;img src&equals;&apos;https&colon;&sol;&sol;example&period;com&sol;
-          &lt;script nonce&equals;&quot;abc&quot; src&equals;&quot;good&period;js&quot;&gt;&lt;&sol;script&gt;
-        </code></pre>
+        <aside class="notes">
+          Si el punto de inyección está depues del source, el script malicioso no se ejecutará.
+          Ya que los navegadores no ejecutan el script si el script no está formado correctamente,
+          eso también significa que si el script tiene más de un src, el script no se ejecutará.
+        </aside>
       </section>
 
       <section>
@@ -986,7 +1011,7 @@
 
         <ul>
           <li>Nonce estático o predecible</li>
-          <li>Nonce semi-dinámico</li>
+          <li>Nonce semi-dinámico (no cambia en cada request)</li>
           <li>Inyectar el nonce automáticamente en cada script</li>
         </ul>
       </section>
@@ -1063,6 +1088,11 @@
               target="_blank">examples/html-injection-content-exfiltration.html</a>
           </small>
         </p>
+
+        <aside class="notes">
+          Con este ataque se podría filtrar el nonce,
+          por eso es importante que el nonce sea único por cada request.
+        </aside>
       </section>
 
       <section>
@@ -1094,6 +1124,56 @@
 
       <section>
         <h2>Una buena política</h2>
+        <p>
+          Principio de privilegio mínimo
+        </p>
+        <p>
+          <small>
+            <a href="https://en.wikipedia.org/wiki/Principle_of_least_privilege" target="_blank">
+              https://en.wikipedia.org/wiki/Principle_of_least_privilege
+            </a>
+          </small>
+        </p>
+      </section>
+
+      <section>
+        <h2>Empieza con una política restrictiva</h2>
+        <pre class=""><code data-trim data-noescape class="http">
+          Content-Security-Policy:
+            default-src 'none';
+            base-uri 'none';
+            form-action 'none';
+            frame-ancestors 'none';
+        </code></pre>
+      </section>
+
+      <section>
+        <h2>Usa un nonce para scripts</h2>
+        <pre class=""><code data-trim data-noescape class="http">
+          Content-Security-Policy:
+            default-src 'none';
+            script-src 'nonce-8IBTHwOdqNKAWeKl7plt8g==';
+            base-uri 'none';
+            form-action 'none';
+            frame-ancestors 'none';
+        </code></pre>
+      </section>
+
+      <section>
+        <h2>Una buena política</h2>
+
+        <ul>
+          <li>
+            Usa una lista muy específica de hosts y paths permitidos
+          </li>
+          <li>
+            Nunca uses <code>'unsafe-inline'</code> y evita usar <code>'unsafe-eval'</code>
+          </li>
+          <li>
+            Evita usar librerías que permiten ejecutar código JS fuera de tu control
+          </li>
+          <li>En lo posible crea reglas para las páginas que las requieran, no todo el sitio</li>
+        </ul>
       </section>
 
       <section>
@@ -1102,7 +1182,7 @@
         </h2>
 
         <p>
-          CSP es una capa de seguridad adicional, no una solución mágica para prevenir ataques XSS.
+          CSP es una capa de seguridad adicional, no una solución mágica para prevenir todo tipo de ataques.
         </p>
 
         <p>
@@ -1168,18 +1248,109 @@
 
       <section>
         <div>
-          <h2>Referencias y recursos adicionales</h2>
-          <ul>
-            <li>
-              <a href="https://example.com/" target="_blank">
-                Título del recurso
-              </a>
-              <br>
-              <small>
-                https://example.com/
-              </small>
-            </li>
-          </ul>
+          <h2>Referencias y recursos</h2>
+          <small>
+            <ul>
+              <li>
+                <a href="examples/" target="_blank">Ejemplos interactivos</a>
+              </li>
+              <li>
+                Especificación oficial de CSP:
+                <a href="https://www.w3.org/TR/CSP3/" target="_blank">
+                  https://www.w3.org/TR/CSP3/
+                </a>
+              </li>
+              <li>
+                Recursos de MDN:
+                <ul>
+                  <li>
+                    <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP" target="_blank">
+                      https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP
+                    </a>
+                  </li>
+                  <li>
+                    <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy"
+                      target="_blank">
+                      https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy
+                    </a>
+                  </li>
+                  <li>
+                    <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/Sources "
+                      target="_blank">
+                      https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/Sources
+                    </a>
+                  </li>
+                </ul>
+              </li>
+              <li>
+                Guía rápida:
+                <a href="https://content-security-policy.com/" target="_blank">
+                  https://content-security-policy.com/
+                </a>
+              </li>
+              <li>
+                Evaluador de CSP de Google:
+                <a href="https://csp-evaluator.withgoogle.com/" target="_blank">
+                  https://csp-evaluator.withgoogle.com/
+                </a>
+              </li>
+              <li>
+                Blog posts y guías sobre bypasses de CSP:
+                <ul>
+                  <li>
+                    <a href="https://joaxcar.com/blog/2024/02/19/csp-bypass-on-portswigger-net-using-google-script-resources/"
+                      target="_blank">
+                      https://joaxcar.com/blog/2024/02/19/csp-bypass-on-portswigger-net-using-google-script-resources/
+                    </a>
+                  </li>
+                  <li>
+                    <a href="https://book.hacktricks.xyz/pentesting-web/content-security-policy-csp-bypass"
+                      target="_blank">
+                      https://book.hacktricks.xyz/pentesting-web/content-security-policy-csp-bypass
+                    </a>
+                  </li>
+                  <li>
+                    <a href="https://aszx87410.github.io/beyond-xss/en/ch2/csp-bypass/" target="_blank">
+                      https://aszx87410.github.io/beyond-xss/en/ch2/csp-bypass/
+                    </a>
+                  </li>
+                  <li>
+                    <a href="https://portswigger.net/research/angularjs-csp-bypass-in-56-characters" target="_blank">
+                      https://portswigger.net/research/angularjs-csp-bypass-in-56-characters
+                    </a>
+                  </li>
+                  <li>
+                    <a href="https://www.slideshare.net/slideshow/breaking-bad-csp/62946744" target="_blank">
+                      https://www.slideshare.net/slideshow/breaking-bad-csp/62946744
+                    </a>
+                  </li>
+                </ul>
+              </li>
+              <li>
+                Otros vectores de ataque:
+                <ul>
+                  <li>
+                    <a href="https://homakov.blogspot.com/2014/01/using-content-security-policy-for-evil.html"
+                      target="_blank">
+                      https://homakov.blogspot.com/2014/01/using-content-security-policy-for-evil.html
+                    </a>
+                  </li>
+                  <li>
+                    <a href="https://portswigger.net/research/stealing-passwords-from-infosec-mastodon-without-bypassing-csp"
+                      target="_blank">
+                      https://portswigger.net/research/stealing-passwords-from-infosec-mastodon-without-bypassing-csp
+                    </a>
+                  </li>
+                  <li>
+                    <a href="https://book.hacktricks.xyz/pentesting-web/dangling-markup-html-scriptless-injection"
+                      target="_blank">
+                      https://book.hacktricks.xyz/pentesting-web/dangling-markup-html-scriptless-injection
+                    </a>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </small>
         </div>
       </section>
     </div>
