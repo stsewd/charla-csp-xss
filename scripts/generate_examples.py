@@ -257,7 +257,7 @@ def get_examples() -> list[Example]:
             nonce=nonce,
             payload=dedent(
                 """
-                <img src="https://example.com/" referrerpolicy="unsafe-url" />
+                <img src="https://www.stsewd.dev/images/rr.gif" referrerpolicy="unsafe-url" />
                 """
             ).strip("\n"),
         )
@@ -291,7 +291,7 @@ def get_examples() -> list[Example]:
             vulnerable=True,
             payload=dedent(
                 """
-                <img src='https://example.com/?
+                <img src='https://www.stsewd.dev/images/rr.gif?
                 """
             ).strip("\n")
             + examples[-1].payload,
