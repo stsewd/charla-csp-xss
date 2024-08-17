@@ -20,20 +20,18 @@
   <link rel="stylesheet" href="../node_modules/@highlightjs/cdn-assets/styles/dark.min.css">
 
   
-  <meta id="csp" http-equiv="Content-Security-Policy" content="script-src &#39;nonce-8IBTHwOdqNKAWeKl7plt8g==&#39; &#39;sha256-opnq3UrQLt34nD/Io3x4OQXex7rVCcRNO2/Dym9R8ro=&#39;;">
+  <meta id="csp" http-equiv="Content-Security-Policy" content="script-src &#39;nonce-8IBTHwOdqNKAWeKl7plt8g==&#39; &#39;sha256-opnq3UrQLt34nD/Io3x4OQXex7rVCcRNO2/Dym9R8ro=&#39;;base-uri &#39;none&#39;;">
   
 
   <script src="js/darkmode.js" nonce="8IBTHwOdqNKAWeKl7plt8g==" defer></script>
   <title>
     
-12 - CSP usando un nonce y hash
+17 - Exfiltración de contenido
 
   </title>
 
   
-<meta id="csp" http-equiv="Content-Security-Policy" content="script-src &#39;nonce-8IBTHwOdqNKAWeKl7plt8g==&#39; &#39;sha256-opnq3UrQLt34nD/Io3x4OQXex7rVCcRNO2/Dym9R8ro=&#39;;">
-<script src="js/csp.js" nonce="8IBTHwOdqNKAWeKl7plt8g=="  defer></script>
-<script src="js/showpayload.js" nonce="8IBTHwOdqNKAWeKl7plt8g==" defer></script>
+<script src="js/csp.js" nonce="8IBTHwOdqNKAWeKl7plt8g==" defer></script>
 
 </head>
 
@@ -44,7 +42,7 @@
 
       <h1>
         
-12 - CSP usando un nonce y hash
+17 - Exfiltración de contenido
 
       </h1>
       
@@ -62,41 +60,20 @@
     </fieldset>
 
     
-<section>
-  <h2>Content-Security-Policy:</h2>
-  <pre><code id="csp-content" class="language-http"></code></pre>
-</section>
-
-<section>
-  <h2>Payload:</h2>
-  <pre><code id="payload-content" class="language-html"></code></pre>
-  <button id="inject">Inject</button>
-  <a href="12.html" role="button" class="secondary outline">Restart</a>
-</section>
-
-<section>
-  <h2>Injected content:</h2>
-  <div id="injection"></div>
-</section>
-
-<section>
-  <h2>Errors:</h2>
-  <pre><code id="errors"></code></pre>
-</section>
-
-<template id="payload-template"><script nonce="abc1234">
-  alert("Este script si está permitido")
-</script>
-
-<script>alert("Inline script correspondiente al hash!");</script></template>
-
+<p>Secretos</p>
+<form>
+  <input type="hidden" name="csrf" value="abc123">
+  <input type="submit" value="Enviar">
+</form>
+<script nonce="8IBTHwOdqNKAWeKl7plt8g=="></script>
+<p class='red'>Más secretos</p>
 
 
     
 <nav>
   <ul>
     <li>
-      <a href="11.html" role="button" class="secondary outline" >&lt; Anterior</a>
+      <a href="16.html" role="button" class="secondary outline" >&lt; Anterior</a>
     </li>
   </ul>
   <ul>
@@ -106,7 +83,7 @@
   </ul>
   <ul>
     <li>
-      <a href="13.html" role="button" class="secondary outline" >Siguiente &gt;</a>
+      <a href="18.html" role="button" class="secondary outline" >Siguiente &gt;</a>
     </li>
   </ul>
 </nav>
