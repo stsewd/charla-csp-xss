@@ -12,17 +12,68 @@
   <link rel="stylesheet" href="node_modules/reveal.js/dist/reset.css">
   <link rel="stylesheet" href="node_modules/reveal.js/dist/reveal.css">
   <link rel="stylesheet" href="node_modules/reveal.js/dist/theme/white.css">
+  <link rel="stylesheet" href="css/custom.css">
 
   <!-- Theme used for syntax highlighting of code -->
   <link rel="stylesheet" href="node_modules/@highlightjs/cdn-assets/styles/atom-one-light.css">
 
   <!-- Fontawewome -->
   <link href="node_modules/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
+
+  <script src="js/start.js" defer></script>
 </head>
 
 <body>
   <div class="reveal">
     <div class="slides">
+
+      <section>
+        <h2>
+          Antes de empezar...
+        </h2>
+
+        <ul>
+          <li>
+            <a href="?view=scroll">
+              Scroll view
+              <i class="fa-solid fa-mobile-screen"></i>
+            </a>
+          </li>
+          <li>
+            <a href="?view=fragment">
+              Fragment view
+              <i class="fa-solid fa-list"></i>
+            </a>
+            <small>(default)</small>
+          </li>
+          <li>
+            <a href="#" class="activate-speaker-mode">
+              Speaker mode
+              <i class="fa-regular fa-comments"></i>
+            </a>
+          </li>
+          <li>
+            <a href="?print-pdf">
+              Print mode
+              <i class="fa-solid fa-print"></i>
+            </a>
+          </li>
+          <li>
+            <a href="#" class="show-shortcuts">
+              Shortcuts
+              <i class="fa-regular fa-circle-question"></i>
+            </a>
+          </li>
+        </ul>
+
+        <p>
+          Navega usando
+          <button class="black-button go-to-next-slide">
+            espacio
+          </button>
+        </p>
+      </section>
+
       <section>
         <header>
           <h1>Content Security Policy</h1>
@@ -39,8 +90,8 @@
           <br>
           <small>
             @stsewd
-            <a href="https://github.com/stsewd"><i class="fab fa-github"></i></a>
-            <a href="https://twitter.com/stsewd"><i class="fab fa-twitter"></i></a>
+            <a href="https://github.com/stsewd" target="_blank"><i class="fab fa-github"></i></a>
+            <a href="https://twitter.com/stsewd" target="_blank"><i class="fab fa-twitter"></i></a>
           </small>
         </p>
 
@@ -158,7 +209,7 @@
         </p>
 
         <small>
-          <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP">
+          <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP" target="_blank">
             https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP
           </a>
         </small>
@@ -351,20 +402,6 @@
       </section>
 
       <section>
-        <h2>Código inline JS encontrado en el sitio</h2>
-
-        <pre class=""><code data-trim data-noescape class="javascript">
-function isOdd(n) {
-  return n % 2 === 1;
-}
-
-function isEven(n) {
-  return !isOdd(n);
-}
-        </code></pre>
-      </section>
-
-      <section>
         <h2>La política (im)perfecta</h2>
         <pre class=""><code data-trim data-noescape class="http">
           Content-Security-Policy:
@@ -372,7 +409,7 @@ function isEven(n) {
               'self'
               'unsafe-inline'
               'unsafe-eval'
-              https://*.google.com
+              https://www.google.com
               https://*.gstatic.com
               https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js;
         </code></pre>
@@ -397,7 +434,7 @@ function isEven(n) {
 
         <img src="img/csp-evaluator.png" alt="">
         <small>
-          <a href="https://csp-evaluator.withgoogle.com/">https://csp-evaluator.withgoogle.com/</a>
+          <a href="https://csp-evaluator.withgoogle.com/" target="_blank">https://csp-evaluator.withgoogle.com/</a>
         </small>
 
         <aside class="notes">
@@ -425,6 +462,8 @@ function isEven(n) {
           &lt;script&gt;alert(document.domain)&lt;/script&gt;@example.com
         </p>
 
+        <img src="img/django-email-validator-invalid.png" class="r-stretch">
+
         <aside class="notes">
           Esta dirección de correo electrónico no es válida.
         </aside>
@@ -443,12 +482,13 @@ function isEven(n) {
         </p>
 
         <blockquote>
-          The local-part of the email address may be unquoted or may be enclosed in quotation marks.
+          The local-part of the email address may be unquoted or may be enclosed in quotation marks.r-stretch
         </blockquote>
 
         <p>
           <small>
-            <a href="https://en.wikipedia.org/wiki/Email_address">https://en.wikipedia.org/wiki/Email_address</a>
+            <a href="https://en.wikipedia.org/wiki/Email_address"
+              target="_blank">https://en.wikipedia.org/wiki/Email_address</a>
           </small>
         </p>
       </section>
@@ -457,6 +497,8 @@ function isEven(n) {
         <h2>HTML injection</h2>
 
         <p>"&lt;script&gt;alert(document.domain)&lt;/script&gt;"@example.com</p>
+
+        <img src="img/django-email-validator-valid.png" class="r-stretch">
 
         <p>
           <strong>
@@ -482,7 +524,7 @@ function isEven(n) {
 
         <p>
           <small>
-            <a href="examples/01.html" target="_blank">examples/01.html</a>
+            <a href="examples/inline-js.html" target="_blank">examples/inline-js.html</a>
           </small>
         </p>
 
@@ -491,20 +533,11 @@ function isEven(n) {
       </section>
 
       <section>
-        <h2>Sitio libre de inline JS</h2>
         <img src="img/later-six-months.jpg" alt="" class="r-stretch">
 
         <aside class="notes">
           Luego de un duro trabajo, logramos limpiar el sitio de código JavaScript inline.
-          Tuvimos que mover nuestra función isOdd a un archivo externo, y cargarlo en la página,
-          y luego hasta lo convertimos en un paquete de npm.
-          Resulta que es una funcionalidad muy útil, y ahora tiene más de 250K descargas semanales,
-          y claro, también publicamos isEven como otro paquete.
         </aside>
-      </section>
-
-      <section>
-        <img src="img/is-odd.png" alt="" class="r-stretch" />
       </section>
 
       <section>
@@ -515,19 +548,23 @@ function isEven(n) {
             script-src
               'self'
               'unsafe-eval'
-              https://*.google.com
+              https://www.google.com
               https://*.gstatic.com
               https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js;
         </code></pre>
 
         <p>
           <small>
-            <a href="examples/02.html" target="_blank">examples/02.html</a>
+            <a href="examples/inline-js-fixed.html" target="_blank">examples/inline-js-fixed.html</a>
           </small>
         </p>
 
         <aside class="notes">
         </aside>
+      </section>
+
+      <section>
+        <img src="img/later-same-day.jpg" class="r-stretch">
       </section>
 
       <section>
@@ -543,13 +580,12 @@ function isEven(n) {
 
         <p>
           <small>
-            <a href="examples/03.html" target="_blank">examples/03.html</a>
+            <a href="examples/angularjs.html" target="_blank">examples/angularjs.html</a>
           </small>
         </p>
       </section>
 
       <section>
-        <h2>Sitio libre AngularJS</h2>
         <img src="img/later-eternity.jpg" alt="" class="r-stretch">
 
         <aside class="notes">
@@ -568,19 +604,23 @@ function isEven(n) {
           Content-Security-Policy:
             script-src
               'self'
-              https://*.google.com
+              https://www.google.com
               https://*.gstatic.com
               https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.min.js;
         </code></pre>
 
         <p>
           <small>
-            <a href="examples/04.html" target="_blank">examples/04.html</a>
+            <a href="examples/angularjs-fixed.html" target="_blank">examples/angularjs-fixed.html</a>
           </small>
         </p>
 
         <aside class="notes">
         </aside>
+      </section>
+
+      <section>
+        <img src="img/later-same-day.jpg" class="r-stretch">
       </section>
 
       <section>
@@ -592,29 +632,22 @@ function isEven(n) {
         </p>
 
         <small>
-          <a href="https://en.wikipedia.org/wiki/JSONP">https://en.wikipedia.org/wiki/JSONP</a>
+          <a href="https://en.wikipedia.org/wiki/JSONP" target="_blank">https://en.wikipedia.org/wiki/JSONP</a>
         </small>
       </section>
 
       <section>
-        <h2>Cross-Origin Resource Sharing</h2>
-        <h3>(CORS)</h3>
+        <h2>CORS</h2>
+
+        <img src="img/jsonp-grandma.jpg" class="r-stretch">
+
         <pre><code class="http">Access-Control-Allow-Origin: *</code></pre>
 
         <p>
           <small>
-            <em>
-              <strong>
-                No intenten esto en casa.
-              </strong>
-            </em>
-          </small>
-        </p>
-
-        <p>
-          <small>
-            <a
-              href="https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS">https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS</a>
+            <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS" target="_blank">
+              https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS
+            </a>
           </small>
         </p>
 
@@ -648,14 +681,20 @@ function isEven(n) {
         <h2>JSON-P</h2>
 
         <pre class=""><code data-trim data-noescape class="html">
-&lt;script
-    src&equals;&quot;https&colon;&sol;&sol;accounts&period;google&period;com&sol;o&sol;oauth2&sol;revoke&quest;callback&equals;alert&lpar;document&period;domain&rpar;&quot;&gt;
-&lt;&sol;script&gt;
+          &lt;script
+              src&equals;&quot;https&colon;&sol;&sol;www&period;google&period;com&sol;complete&sol;search&quest;jsonp&equals;alert(document.domain)//&amp;client=chrome"&gt;
+          &lt;&sol;script&gt;
         </code></pre>
 
         <p>
           <small>
-            <a href="examples/05.html" target="_blank">examples/05.html</a>
+            <a href="https://github.com/zigoo0/JSONBee" target="_blank">https://github.com/zigoo0/JSONBee</a>
+          </small>
+        </p>
+
+        <p>
+          <small>
+            <a href="examples/jsonp.html" target="_blank">examples/jsonp.html</a>
           </small>
         </p>
 
@@ -671,14 +710,13 @@ function isEven(n) {
 
         <p>
           <small>
-            <a
-              href="https://developers.google.com/recaptcha/docs/faq">https://developers.google.com/recaptcha/docs/faq</a>
+            <a href="https://developers.google.com/recaptcha/docs/faq"
+              target="_blank">https://developers.google.com/recaptcha/docs/faq</a>
           </small>
         </p>
       </section>
 
       <section>
-        <h2>Sitio libre de JSON-P</h2>
         <img src="img/later-several-days.png" alt="" class="r-stretch">
       </section>
 
@@ -696,12 +734,16 @@ function isEven(n) {
 
         <p>
           <small>
-            <a href="examples/06.html" target="_blank">examples/06.html</a>
+            <a href="examples/jsonp-fixed.html" target="_blank">examples/jsonp-fixed.html</a>
           </small>
         </p>
 
         <aside class="notes">
         </aside>
+      </section>
+
+      <section>
+        <img src="img/later-same-day.jpg" class="r-stretch">
       </section>
 
       <section>
@@ -713,7 +755,7 @@ function isEven(n) {
 
         <p>
           <small>
-            <a href="examples/07.html" target="_blank">examples/07.html</a>
+            <a href="examples/open-redirect.html" target="_blank">examples/open-redirect.html</a>
           </small>
         </p>
 
@@ -729,8 +771,14 @@ function isEven(n) {
 
         <p>
           <small>
-            <a
-              href="https://www.w3.org/TR/CSP3/#source-list-paths-and-redirects">https://www.w3.org/TR/CSP3/#source-list-paths-and-redirects</a>
+            <a href="https://www.w3.org/TR/CSP3/#source-list-paths-and-redirects" target="_blank">
+              https://www.w3.org/TR/CSP3/#source-list-paths-and-redirects
+            </a>
+            <br>
+            <br>
+            <a href="https://homakov.blogspot.de/2014/01/using-content-security-policy-for-evil.html" target="_blank">
+              https://homakov.blogspot.de/2014/01/using-content-security-policy-for-evil.html
+            </a>
           </small>
         </p>
       </section>
@@ -744,7 +792,7 @@ function isEven(n) {
 
         <p>
           <small>
-            <a href="examples/08.html" target="_blank">examples/08.html</a>
+            <a href="examples/open-redirect-bypass.html" target="_blank">examples/open-redirect-bypass.html</a>
           </small>
         </p>
 
@@ -753,7 +801,6 @@ function isEven(n) {
       </section>
 
       <section>
-        <h2>¡Open redirect arreglado!</h2>
         <img src="img/later-six-hours.jpg" alt="">
         <aside class="notes">
         </aside>
@@ -773,9 +820,14 @@ function isEven(n) {
 
         <p>
           <small>
-            <a href="examples/09.html" target="_blank">examples/09.html</a>
+            <a href="examples/open-redirect-bypass-fixed.html"
+              target="_blank">examples/open-redirect-bypass-fixed.html</a>
           </small>
         </p>
+      </section>
+
+      <section>
+        <img src="img/later-same-day.jpg" class="r-stretch">
       </section>
 
       <section>
@@ -791,7 +843,7 @@ function isEven(n) {
 
         <p>
           <small>
-            <a href="examples/10.html" target="_blank">examples/10.html</a>
+            <a href="examples/angularjs-is-back.html" target="_blank">examples/angularjs-is-back.html</a>
           </small>
         </p>
       </section>
@@ -803,8 +855,8 @@ function isEven(n) {
 
         <p>
           <small>
-            <a
-              href="https://developers.google.com/recaptcha/docs/faq">https://developers.google.com/recaptcha/docs/faq</a>
+            <a href="https://developers.google.com/recaptcha/docs/faq"
+              target="_blank">https://developers.google.com/recaptcha/docs/faq</a>
           </small>
         </p>
       </section>
@@ -827,9 +879,9 @@ function isEven(n) {
 
         <p>
           <small>
-            <a href="examples/11.html" target="_blank">examples/11.html</a>
+            <a href="examples/hash-and-nonce.html" target="_blank">examples/hash-and-nonce.html</a>
             <br>
-            <a href="examples/12.html" target="_blank">examples/12.html</a>
+            <a href="examples/hash-and-nonce-in-action.html" target="_blank">examples/hash-and-nonce-in-action.html</a>
           </small>
         </p>
       </section>
@@ -848,8 +900,8 @@ function isEven(n) {
         </blockquote>
         <p>
           <small>
-            <a
-              href="https://devdoc.net/web/developer.mozilla.org/en-US/docs/Web/HTML/Element/base.html">https://devdoc.net/web/developer.mozilla.org/en-US/docs/Web/HTML/Element/base.html</a>
+            <a href="https://devdoc.net/web/developer.mozilla.org/en-US/docs/Web/HTML/Element/base.html"
+              target="_blank">https://devdoc.net/web/developer.mozilla.org/en-US/docs/Web/HTML/Element/base.html</a>
           </small>
         </p>
       </section>
@@ -863,9 +915,9 @@ function isEven(n) {
 
         <p>
           <small>
-            <a href="examples/13.html" target="_blank">examples/13.html</a>
+            <a href="examples/base-uri-bypass.html" target="_blank">examples/base-uri-bypass.html</a>
             <br>
-            <a href="examples/14.html" target="_blank">examples/14.html</a>
+            <a href="examples/base-uri-bypass-fixed.html" target="_blank">examples/base-uri-bypass-fixed.html</a>
           </small>
         </p>
       </section>
@@ -912,8 +964,8 @@ function isEven(n) {
         <h2>Re-uso de contenido de hashes</h2>
 
         <p>
-          Si la política CSP permite inline scripts que corresponden a un hash específico,
-          el atacante también puede hacer uso de ese mismo contenido.
+          Si la política permite scripts correspondientes a un hash,
+          el atacante también puede hacer uso de esos scripts.
         </p>
 
         <pre class=""><code data-trim data-noescape class="http">
@@ -923,7 +975,7 @@ function isEven(n) {
         </code></pre>
 
         <pre class=""><code data-trim data-noescape class="html">
-          &lt;a onclick&equals;&quot;deleteAccount&lpar;&rpar;&quot;&gt;Delete account&lt;&sol;a&gt;
+            &lt;script&gt;deleteAccount&lpar;&rpar;&lt;&sol;script&gt;
         </code></pre>
       </section>
 
@@ -964,7 +1016,8 @@ function isEven(n) {
 
         <p>
           <small>
-            <a href="examples/15.html?code=12345" target="_blank">examples/15.html</a>
+            <a href="examples/html-injection-redirection.html"
+              target="_blank">examples/html-injection-redirection.html</a>
           </small>
         </p>
       </section>
@@ -981,11 +1034,12 @@ function isEven(n) {
         </code></pre>
         <p>
           <small>
-            <a
-              href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Referrer-Policy">https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Referrer-Policy</a>
+            <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Referrer-Policy"
+              target="_blank">https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Referrer-Policy</a>
             <br>
             <br>
-            <a href="examples/16.html?code=12345" target="_blank">examples/16.html</a>
+            <a href="examples/html-injection-url-exfiltration.html?code=12345"
+              target="_blank">examples/html-injection-url-exfiltration.html</a>
           </small>
         </p>
       </section>
@@ -1003,9 +1057,10 @@ function isEven(n) {
         </code></pre>
         <p>
           <small>
-            <a href="examples/17.html" target="_blank">examples/17.html</a>
+            <a href="examples/html-injection.html" target="_blank">examples/html-injection.html</a>
             <br>
-            <a href="examples/18.html" target="_blank">examples/18.html</a>
+            <a href="examples/html-injection-content-exfiltration.html"
+              target="_blank">examples/html-injection-content-exfiltration.html</a>
           </small>
         </p>
       </section>
@@ -1031,7 +1086,8 @@ function isEven(n) {
 
         <p>
           <small>
-            <a href="examples/19.html" target="_blank">examples/19.html</a>
+            <a href="examples/html-injection-credentials-exfiltration.html"
+              target="_blank">examples/html-injection-credentials-exfiltration.html</a>
           </small>
         </p>
       </section>
@@ -1040,50 +1096,47 @@ function isEven(n) {
         <h2>Una buena política</h2>
       </section>
 
+      <section>
+        <h2>
+          Conclusión
+        </h2>
 
-      <section data-transition="zoom">
-        <h2>Frase para terminar la charla</h2>
         <p>
-          subtitulo de la frase
+          CSP es una capa de seguridad adicional, no una solución mágica para prevenir ataques XSS.
         </p>
 
-        <img src="img/qr.png" width="200px">
+        <p>
+          Bypassear políticas CSP es una nueva habilidad que debemos aprender,
+          y también otras maneras creativas de explotación sin ejecutar JavaScript.
+        </p>
+      </section>
 
-        <div>
-          <h6>Referencias y recursos adicionales</h6>
-          <ul>
-            <li>
-              <a href="https://example.com/">
-                Título del recurso
+      <section data-transition="zoom">
+        <h3>
+          CSP es una capa de seguridad adicional, no una solución mágica
+        </h3>
+        <p>
+          Aprende, entiende, y comparte
+        </p>
+
+        <img src="img/qr.png" class="r-stretch">
+
+        <footer>
+          <p>
+            <small>
+              <a href="" class="go-to-next-slide">
+                Referencias y recursos
+                <i class="fa-regular fa-bookmark"></i>
+                <i class="fa-solid fa-link"></i>
               </a>
               <br>
-              <small>
-                https://example.com/
-              </small>
-            </li>
-          </ul>
-        </div>
-        <footer class="fragment">
-          <p>
-            <small>
-              <a href="https://stsewd.dev">
-                <span>
-                  Más sobre mi
-                </span>
-                <br />
-                <span>https://stsewd.dev</span>
-              </a>
-            </small>
-          </p>
-
-          <p>
-            <small>
-              <a href="https://github.com/stsewd/charla-xxx">
+              <br>
+              <a href="https://github.com/stsewd/charla-csp-xss" target="_blank">
                 <span>
                   Código fuente <i class="fas fa-code-branch"></i>
                 </span>
                 <br />
-                <span>https://github.com/stsewd/charla-xxx</span>
+                <span>https://github.com/stsewd/charla-csp-xss</span>
               </a>
             </small>
           </p>
@@ -1091,8 +1144,10 @@ function isEven(n) {
           <p>
             <small>
               @stsewd
-              <a href="http://github.com/stsewd"><i class="fab fa-github"></i></a>
-              <a href="http://twitter.com/stsewd"><i class="fab fa-twitter"></i></a>
+              <a href="http://github.com/stsewd" target="_blank"><i class="fab fa-github"></i></a>
+              <a href="http://twitter.com/stsewd" target="_blank"><i class="fab fa-twitter"></i></a>
+              -
+              <a href="https://stsewd.dev" target="_blank">https://stsewd.dev</a>
             </small>
           </p>
         </footer>
@@ -1110,12 +1165,31 @@ function isEven(n) {
           públicas que reportado, podemos hablar sobre eso más luego si desean.
         </aside>
       </section>
+
+      <section>
+        <div>
+          <h2>Referencias y recursos adicionales</h2>
+          <ul>
+            <li>
+              <a href="https://example.com/" target="_blank">
+                Título del recurso
+              </a>
+              <br>
+              <small>
+                https://example.com/
+              </small>
+            </li>
+          </ul>
+        </div>
+      </section>
     </div>
   </div>
 
   <script src="node_modules/reveal.js/dist/reveal.js"></script>
   <script src="node_modules/reveal.js/plugin/notes/notes.js"></script>
   <script src="node_modules/reveal.js/plugin/markdown/markdown.js"></script>
+  <script src="node_modules/reveal.js/plugin/search/search.js"></script>
+  <script src="node_modules/reveal.js/plugin/zoom/zoom.js"></script>
   <script src="node_modules/reveal.js/plugin/highlight/highlight.js"></script>
   <script>
     // More info about initialization & config:
@@ -1127,7 +1201,7 @@ function isEven(n) {
       width: 1060,
       height: 800,
       // Learn about plugins: https://revealjs.com/plugins/
-      plugins: [RevealMarkdown, RevealHighlight, RevealNotes]
+      plugins: [RevealMarkdown, RevealHighlight, RevealNotes, RevealSearch, RevealZoom]
     });
   </script>
 </body>

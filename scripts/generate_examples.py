@@ -8,24 +8,29 @@ BASE_PATH = Path(__file__).parent.absolute()
 
 @dataclass
 class Example:
+    slug: str
     title: str
     csp: str
     vulnerable: bool
     payload: str
     nonce: str | None = None
     raw: bool = False
-    page: str = ""
 
     def replace(self, **kwargs):
         new_kwargs = {**self.__dict__, **kwargs}
         return Example(**new_kwargs)
 
+    @property
+    def page(self):
+        return f"{self.slug}.html"
+
 
 def get_examples() -> list[Example]:
     examples = []
-    csp = "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://*.google.com https://*.gstatic.com https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js;"
+    csp = "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.google.com https://*.gstatic.com https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js;"
     examples.append(
         Example(
+            slug="inline-js",
             title="CSP bypass usando inline JS",
             csp=csp,
             vulnerable=True,
@@ -42,6 +47,7 @@ def get_examples() -> list[Example]:
     csp = csp.replace("'unsafe-inline' ", "")
     examples.append(
         examples[-1].replace(
+            slug="inline-js-fixed",
             vulnerable=False,
             csp=csp,
         )
@@ -49,6 +55,7 @@ def get_examples() -> list[Example]:
 
     examples.append(
         Example(
+            slug="angularjs",
             title="CSP bypass usando AngularJS",
             csp=csp,
             vulnerable=True,
@@ -70,6 +77,7 @@ def get_examples() -> list[Example]:
     )
     examples.append(
         examples[-1].replace(
+            slug="angularjs-fixed",
             vulnerable=False,
             csp=csp,
         )
@@ -77,21 +85,23 @@ def get_examples() -> list[Example]:
 
     examples.append(
         Example(
+            slug="jsonp",
             title="CSP bypass usando JSON-P",
             csp=csp,
             vulnerable=True,
             payload=dedent(
                 """
-                <script src="https://accounts.google.com/o/oauth2/revoke?callback=alert(document.domain)"></script>
+                <script src="https://www.google.com/complete/search?jsonp=alert(document.domain)//&client=chrome"></script>
                 """
             ).strip("\n"),
         )
     )
 
-    csp = csp.replace("https://*.google.com", "https://www.google.com/recaptcha/")
+    csp = csp.replace("https://www.google.com", "https://www.google.com/recaptcha/")
     csp = csp.replace("https://*.gstatic.com", "https://www.gstatic.com/recaptcha/")
     examples.append(
         examples[-1].replace(
+            slug="jsonp-fixed",
             vulnerable=False,
             csp=csp,
         )
@@ -99,6 +109,7 @@ def get_examples() -> list[Example]:
 
     examples.append(
         Example(
+            slug="open-redirect",
             title="CSP bypass usando un open redirect",
             csp=csp,
             vulnerable=False,
@@ -112,6 +123,7 @@ def get_examples() -> list[Example]:
 
     examples.append(
         Example(
+            slug="open-redirect-bypass",
             title="CSP bypass usando un open redirect",
             csp=csp,
             vulnerable=True,
@@ -130,6 +142,7 @@ def get_examples() -> list[Example]:
 
     examples.append(
         examples[-1].replace(
+            slug="open-redirect-bypass-fixed",
             vulnerable=False,
             csp=csp,
         )
@@ -137,6 +150,7 @@ def get_examples() -> list[Example]:
 
     examples.append(
         Example(
+            slug="angularjs-is-back",
             title="CSP bypass ¡AngularJS está de vuelta!",
             csp=csp,
             vulnerable=True,
@@ -158,6 +172,7 @@ def get_examples() -> list[Example]:
 
     examples.append(
         Example(
+            slug="hash-and-nonce",
             title="CSP usando un nonce y hash",
             csp=csp,
             vulnerable=False,
@@ -176,6 +191,7 @@ def get_examples() -> list[Example]:
 
     examples.append(
         examples[-1].replace(
+            slug="hash-and-nonce-in-action",
             payload=dedent(
                 f"""
                 <script nonce="abc1234">
@@ -190,6 +206,7 @@ def get_examples() -> list[Example]:
 
     examples.append(
         Example(
+            slug="base-uri-bypass",
             title="Nonce bypass usando <base>",
             csp=csp,
             vulnerable=True,
@@ -210,6 +227,7 @@ def get_examples() -> list[Example]:
 
     examples.append(
         examples[-1].replace(
+            slug="base-uri-bypass-fixed",
             csp=csp,
             vulnerable=False,
         )
@@ -217,6 +235,7 @@ def get_examples() -> list[Example]:
 
     examples.append(
         Example(
+            slug="html-injection-redirection",
             title="Redireccionamiento a otro sitio",
             csp=csp,
             vulnerable=True,
@@ -231,6 +250,7 @@ def get_examples() -> list[Example]:
 
     examples.append(
         Example(
+            slug="html-injection-url-exfiltration",
             title="Exfiltración de URL",
             csp=csp,
             vulnerable=True,
@@ -245,6 +265,7 @@ def get_examples() -> list[Example]:
 
     examples.append(
         Example(
+            slug="html-injection",
             title="Exfiltración de contenido",
             csp=csp,
             vulnerable=False,
@@ -266,6 +287,7 @@ def get_examples() -> list[Example]:
 
     examples.append(
         examples[-1].replace(
+            slug="html-injection-content-exfiltration",
             vulnerable=True,
             payload=dedent(
                 """
@@ -278,6 +300,7 @@ def get_examples() -> list[Example]:
 
     examples.append(
         Example(
+            slug="html-injection-credentials-exfiltration",
             title="Exfiltración de credenciales",
             csp=csp,
             vulnerable=True,
@@ -306,25 +329,29 @@ def get_enviroment():
 
 def main():
     examples = get_examples()
+
+    unique_slugs = set()
+    for i, example in enumerate(examples):
+        if example.slug in unique_slugs:
+            raise Exception(f"Duplicate slug: {example.slug}. Example: {i+1}")
+        unique_slugs.add(example.slug)
+
     total = len(examples)
     env = get_enviroment()
     example_template = env.get_template("example.html")
     example_raw_template = env.get_template("example-raw.html")
     for i, example in enumerate(examples):
         section_id = f"{i+1:02d}"
-        current_example = f"{section_id}.html"
-        # Inject page info into each example.
-        example.page = current_example
         prev_example = None
         next_example = None
         if i > 0:
-            prev_example = f"{i:02d}.html"
+            prev_example = examples[i - 1].page
         if i < total - 1:
-            next_example = f"{i+2:02d}.html"
+            next_example = examples[i + 1].page
 
         context = {
             "section_id": section_id,
-            "current_example": current_example,
+            "current_example": example.page,
             "prev_example": prev_example,
             "next_example": next_example,
             **example.__dict__,
@@ -335,7 +362,7 @@ def main():
         else:
             template = example_template
         output = template.render(**context)
-        (BASE_PATH / f"../examples/{section_id}.html").write_text(output)
+        (BASE_PATH / f"../examples/{example.page}").write_text(output)
 
     # Generate index
     index_template = env.get_template("index.html")
