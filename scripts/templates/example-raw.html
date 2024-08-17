@@ -1,0 +1,9 @@
+{% extends "example.html" %}
+
+{% block extra_head %}
+<script src="js/csp.js" {% if nonce %}nonce="{{ nonce }}"{% endif %} defer></script>
+{% endblock %}
+
+{% block content %}
+{{ payload|safe }}
+{% endblock %}

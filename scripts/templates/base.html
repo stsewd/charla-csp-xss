@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html data-theme="light">
+
+<head>
+  <!-- vim: set ft=html: -->
+  <!-- Force Neovim to use HTML as filetype instead of angular -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+
+  <!-- PicoCSS -->
+  <link rel="stylesheet" href="../node_modules/@picocss/pico/css/pico.blue.min.css">
+  <link rel="stylesheet" href="../node_modules/@picocss/pico/css/pico.colors.min.css">
+
+  <!-- Fontawewome -->
+  <link href="../node_modules/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
+
+  <!-- Highlight.js -->
+  <script src="../node_modules/@highlightjs/cdn-assets/highlight.min.js" {% if nonce %}nonce="{{ nonce }}" {% endif %}>
+  </script>
+  <link rel="stylesheet" href="../node_modules/@highlightjs/cdn-assets/styles/dark.min.css">
+
+  {% if csp %}
+  <meta id="csp" http-equiv="Content-Security-Policy" content="{{ csp }}">
+  {% endif %}
+
+  <script src="js/darkmode.js" {% if nonce %}nonce="{{ nonce }}" {% endif %} defer></script>
+  <title>
+    {% block title %}Examples{% endblock %}
+  </title>
+
+  {% block extra_head %}
+  {% endblock %}
+</head>
+
+<body>
+  <main class="container">
+    <header>
+      {% block header %}
+      <nav>
+        <ul>
+          <h1>
+            {{ self.title() }}
+          </h1>
+        </ul>
+        <ul>
+          <li><a href=".">Índice</a></li>
+          <li><a href="..">Slides</a></li>
+        </ul>
+      </nav>
+      {% endblock %}
+    </header>
+
+    <fieldset>
+      <label>
+        <input id="dark-mode-toggle" type="checkbox" role="switch" />
+        Dark mode
+      </label>
+    </fieldset>
+
+    {% block content %}
+    {% endblock %}
+
+    {% block footer %}
+    {% endblock %}
+  </main>
+</body>
+
+</html>

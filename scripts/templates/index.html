@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}
+Ejemplos
+{% endblock %}
+
+{% block content %}
+<ol>
+{% for example in examples %}
+  <li>
+    <a href="{{ example.page }}">{{ example.title }}</a>
+    {% if example.vulnerable %}
+    <i class="fa-solid fa-bug pico-color-red-500" title="Ejemplo vulnerable"></i>
+    </span>
+    {% else %}
+    <i class="fa-solid fa-circle-check pico-color-jade-500" title="Ejemplo NO vulnerable"></i>
+    {% endif %}
+  </li>
+{% endfor %}
+</ol>
+{% endblock %}

@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+
+{% block title %}
+{{ section_id }} - {{ title }}
+{% endblock %}
+
+{% block extra_head %}
+<meta id="csp" http-equiv="Content-Security-Policy" content="{{ csp }}">
+<script src="js/csp.js" {% if nonce %}nonce="{{ nonce }}" {% endif %} defer></script>
+<script src="js/showpayload.js" {% if nonce %}nonce="{{ nonce }}" {% endif %} defer></script>
+{% endblock %}
+
+{% block header %}
+{{ super() }}
+{% if vulnerable %}
+<p class="pico-background-red-500">Ejemplo vulnerable</p>
+{% else %}
+<p class="pico-background-jade-500">Ejemplo no vulnerable</p>
+{% endif %}
+{% endblock %}
+
+{% block content %}
+<section>
+  <h2>
+    <i class="fa-solid fa-shield-halved"></i>
+    Content-Security-Policy
+  </h2>
+  <pre><code id="csp-content" class="language-http"></code></pre>
+</section>
+
+<section>
+  <h2>
+    <i class="fa-solid fa-code"></i>
+    Payload
+  </h2>
+  <pre><code id="payload-content" class="language-html"></code></pre>
+  <button id="inject">Inject</button>
+  <a href="{{ current_example }}" role="button" class="secondary outline">Restart</a>
+</section>
+
+<section>
+  <h2>
+    <i class="fa-solid fa-syringe"></i>
+    Injected content
+  </h2>
+  <div id="injection"></div>
+</section>
+
+<section>
+  <h2>
+    <i class="fa-solid fa-circle-exclamation"></i>
+    Errors
+  </h2>
+  <pre><code id="errors"></code></pre>
+</section>
+
+<template id="payload-template">{{ payload|safe }}</template>
+
+{% endblock %}
+
+<footer>
+  {% block footer %}
+  <nav>
+    <ul>
+      <li>
+        <a href="{{ prev_example }}" role="button" class="secondary outline" {% if not prev_example %}disabled{% endif
+          %}>
+          <i class="fa-solid fa-chevron-left"></i>
+          anterior
+        </a>
+      </li>
+    </ul>
+    <ul>
+      <li>
+        <a href="." role="button" class="secondary outline">índice</a>
+      </li>
+    </ul>
+    <ul>
+      <li>
+        <a href="{{ next_example }}" role="button" class="secondary outline" {% if not next_example %}disabled{% endif
+          %}>
+          siguiente
+          <i class="fa-solid fa-chevron-right"></i>
+        </a>
+      </li>
+    </ul>
+  </nav>
+  {% endblock %}
+</footer>

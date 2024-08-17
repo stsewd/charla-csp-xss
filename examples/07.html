@@ -16,7 +16,8 @@
   <link href="../node_modules/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
 
   <!-- Highlight.js -->
-  <script src="../node_modules/@highlightjs/cdn-assets/highlight.min.js" ></script>
+  <script src="../node_modules/@highlightjs/cdn-assets/highlight.min.js" >
+  </script>
   <link rel="stylesheet" href="../node_modules/@highlightjs/cdn-assets/styles/dark.min.css">
 
   
@@ -39,20 +40,28 @@
 
 <body>
   <main class="container">
-    <hgroup>
+    <header>
       
 
-      <h1>
-        
+      <nav>
+        <ul>
+          <h1>
+            
 07 - CSP bypass usando un open redirect
 
-      </h1>
+          </h1>
+        </ul>
+        <ul>
+          <li><a href=".">Índice</a></li>
+          <li><a href="..">Slides</a></li>
+        </ul>
+      </nav>
       
 
 <p class="pico-background-jade-500">Ejemplo no vulnerable</p>
 
 
-    </hgroup>
+    </header>
 
     <fieldset>
       <label>
@@ -63,24 +72,36 @@
 
     
 <section>
-  <h2>Content-Security-Policy:</h2>
+  <h2>
+    <i class="fa-solid fa-shield-halved"></i>
+    Content-Security-Policy
+  </h2>
   <pre><code id="csp-content" class="language-http"></code></pre>
 </section>
 
 <section>
-  <h2>Payload:</h2>
+  <h2>
+    <i class="fa-solid fa-code"></i>
+    Payload
+  </h2>
   <pre><code id="payload-content" class="language-html"></code></pre>
   <button id="inject">Inject</button>
   <a href="07.html" role="button" class="secondary outline">Restart</a>
 </section>
 
 <section>
-  <h2>Injected content:</h2>
+  <h2>
+    <i class="fa-solid fa-syringe"></i>
+    Injected content
+  </h2>
   <div id="injection"></div>
 </section>
 
 <section>
-  <h2>Errors:</h2>
+  <h2>
+    <i class="fa-solid fa-circle-exclamation"></i>
+    Errors
+  </h2>
   <pre><code id="errors"></code></pre>
 </section>
 
@@ -89,24 +110,30 @@
 
 
     
-<nav>
-  <ul>
-    <li>
-      <a href="06.html" role="button" class="secondary outline" >&lt; Anterior</a>
-    </li>
-  </ul>
-  <ul>
-    <li>
-      <a href="." role="button" class="secondary outline">Inicio</a>
-    </li>
-  </ul>
-  <ul>
-    <li>
-      <a href="08.html" role="button" class="secondary outline" >Siguiente &gt;</a>
-    </li>
-  </ul>
-</nav>
-
+  <nav>
+    <ul>
+      <li>
+        <a href="06.html" role="button" class="secondary outline" >
+          <i class="fa-solid fa-chevron-left"></i>
+          anterior
+        </a>
+      </li>
+    </ul>
+    <ul>
+      <li>
+        <a href="." role="button" class="secondary outline">índice</a>
+      </li>
+    </ul>
+    <ul>
+      <li>
+        <a href="08.html" role="button" class="secondary outline" >
+          siguiente
+          <i class="fa-solid fa-chevron-right"></i>
+        </a>
+      </li>
+    </ul>
+  </nav>
+  
   </main>
 </body>
 
