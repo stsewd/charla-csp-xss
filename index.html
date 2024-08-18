@@ -17,7 +17,7 @@
   <!-- Theme used for syntax highlighting of code -->
   <link rel="stylesheet" href="node_modules/@highlightjs/cdn-assets/styles/atom-one-light.css">
 
-  <!-- Fontawewome -->
+  <!-- Fontawesome -->
   <link href="node_modules/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
 
   <script src="js/start.js" defer></script>
@@ -135,7 +135,8 @@
         <h1>NO</h1>
 
         <p>
-          Si la política es lo suficientemente restrictiva, será difícil pero no imposible llevar a cabo un ataque XSS.
+          Si la política es lo suficientemente restrictiva, será difícil,
+          pero no siempre imposible llevar a cabo un ataque XSS.
         </p>
         <p>
           Inyectar HTML sin ejecutar JS puede tener impacto en la seguridad de la página,
@@ -202,7 +203,8 @@
           <li>Había escuchado sobre CSP</li>
           <li>En el trabajo me tocó iniciar la implementación de CSP</li>
           <li>Bug bounty: XSS en una web con CSP usando nonces. No pude ejecutar JS, pero pude demostrar impacto</li>
-          <li>Bug bounty: XSS en una web con CSP, muy restrictiva pero sin nonces. Puede hacer un bypass y ejeuctar JS
+          <li>
+            Bug bounty: XSS en una web con CSP, muy restrictiva pero sin nonces. Pude hacer un bypass y ejeuctar JS
           </li>
           <li>Esta charla</li>
         </ul>
@@ -242,6 +244,7 @@
         <small>
           <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP" target="_blank">
             https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP
+            <i class="fa-solid fa-up-right-from-square"></i>
           </a>
         </small>
 
@@ -465,7 +468,10 @@
 
         <img src="img/csp-evaluator.png" alt="">
         <small>
-          <a href="https://csp-evaluator.withgoogle.com/" target="_blank">https://csp-evaluator.withgoogle.com/</a>
+          <a href="https://csp-evaluator.withgoogle.com/" target="_blank">
+            https://csp-evaluator.withgoogle.com/
+            <i class="fa-solid fa-up-right-from-square"></i>
+          </a>
         </small>
 
         <aside class="notes">
@@ -520,6 +526,7 @@
           <small>
             <a href="https://en.wikipedia.org/wiki/Email_address" target="_blank">
               https://en.wikipedia.org/wiki/Email_address
+              <i class="fa-solid fa-up-right-from-square"></i>
             </a>
           </small>
         </p>
@@ -556,7 +563,10 @@
 
         <p>
           <small>
-            <a href="examples/inline-js.html" target="_blank">examples/inline-js.html</a>
+            <a href="examples/inline-js.html" target="_blank">
+              Ejemplo
+              <i class="fa-solid fa-code"></i>
+            </a>
           </small>
         </p>
 
@@ -587,7 +597,10 @@
 
         <p>
           <small>
-            <a href="examples/inline-js-fixed.html" target="_blank">examples/inline-js-fixed.html</a>
+            <a href="examples/inline-js-fixed.html" target="_blank">
+              Ejemplo
+              <i class="fa-solid fa-code"></i>
+            </a>
           </small>
         </p>
 
@@ -612,7 +625,10 @@
 
         <p>
           <small>
-            <a href="examples/angularjs.html" target="_blank">examples/angularjs.html</a>
+            <a href="examples/angularjs.html" target="_blank">
+              Ejemplo
+              <i class="fa-solid fa-code"></i>
+            </a>
           </small>
         </p>
       </section>
@@ -621,10 +637,10 @@
         <img src="img/later-eternity.jpg" alt="" class="r-stretch">
 
         <aside class="notes">
-          Luego de un duro trabajo, logramos limpiar el sitio de AngularJS,
-          y pudimos eliminar la dependencia de AngularJS, y con ello también `unsafe-eval`.
-          Tuvimos que reescribir todo el sitio, y para ello pues analizamos
-          varias opciones para reemplazar AngularJS, opciones como React, Vue, Svelte.
+          Luego de un arduo trabajo, logramos limpiar el sitio de AngularJS,
+          eliminando su dependencia y también `unsafe-eval`.
+          Tuvimos que reescribir todo el sitio,
+          analizando varias opciones para reemplazar AngularJS, como React, Vue y Svelte.
           Y obviamente, escogimos la mejor opción, JQuery.
         </aside>
       </section>
@@ -643,7 +659,10 @@
 
         <p>
           <small>
-            <a href="examples/angularjs-fixed.html" target="_blank">examples/angularjs-fixed.html</a>
+            <a href="examples/angularjs-fixed.html" target="_blank">
+              Ejemplo
+              <i class="fa-solid fa-code"></i>
+            </a>
           </small>
         </p>
 
@@ -664,7 +683,10 @@
         </p>
 
         <small>
-          <a href="https://en.wikipedia.org/wiki/JSONP" target="_blank">https://en.wikipedia.org/wiki/JSONP</a>
+          <a href="https://en.wikipedia.org/wiki/JSONP" target="_blank">
+            https://en.wikipedia.org/wiki/JSONP
+            <i class="fa-solid fa-up-right-from-square"></i>
+          </a>
         </small>
       </section>
 
@@ -679,6 +701,7 @@
           <small>
             <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS" target="_blank">
               https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS
+              <i class="fa-solid fa-up-right-from-square"></i>
             </a>
           </small>
         </p>
@@ -686,8 +709,8 @@
         <aside class="notes">
           Para los que no han usado JSON-P,
           tal vez hayan escuchado de CORS, Cross-Origin Resource Sharing,
-          Cuando intentan usar una API de un sitio en otro sitio, y el navegador bloquea la petición
-          con un error de CORS. Y Usualmente lo que hacen las personas para "arreglar" esto es
+          Cuando intentan usar una API de un sitio en otro, y el navegador bloquea la petición con un error de CORS.
+          Y Usualmente lo que hacen las personas para "arreglar" esto es
           agregar el header Access-Control-Allow-Origin: * en la respuesta HTTP.
 
           Esto es lo equivalente para lo se usaba JSON-P.
@@ -720,13 +743,19 @@
 
         <p>
           <small>
-            <a href="https://github.com/zigoo0/JSONBee" target="_blank">https://github.com/zigoo0/JSONBee</a>
+            <a href="https://github.com/zigoo0/JSONBee" target="_blank">
+              https://github.com/zigoo0/JSONBee
+              <i class="fa-solid fa-up-right-from-square"></i>
+            </a>
           </small>
         </p>
 
         <p>
           <small>
-            <a href="examples/jsonp.html" target="_blank">examples/jsonp.html</a>
+            <a href="examples/jsonp.html" target="_blank">
+              Ejemplo
+              <i class="fa-solid fa-code"></i>
+            </a>
           </small>
         </p>
 
@@ -742,8 +771,10 @@
 
         <p>
           <small>
-            <a href="https://developers.google.com/recaptcha/docs/faq"
-              target="_blank">https://developers.google.com/recaptcha/docs/faq</a>
+            <a href="https://developers.google.com/recaptcha/docs/faq" target="_blank">
+              https://developers.google.com/recaptcha/docs/faq
+              <i class="fa-solid fa-up-right-from-square"></i>
+            </a>
           </small>
         </p>
       </section>
@@ -766,7 +797,10 @@
 
         <p>
           <small>
-            <a href="examples/jsonp-fixed.html" target="_blank">examples/jsonp-fixed.html</a>
+            <a href="examples/jsonp-fixed.html" target="_blank">
+              Ejemplo
+              <i class="fa-solid fa-code"></i>
+            </a>
           </small>
         </p>
 
@@ -787,14 +821,17 @@
 
         <p>
           <small>
-            <a href="examples/open-redirect.html" target="_blank">examples/open-redirect.html</a>
+            <a href="examples/open-redirect.html" target="_blank">
+              Ejemplo
+              <i class="fa-solid fa-code"></i>
+            </a>
           </small>
         </p>
 
       </section>
 
       <section>
-        <h2>CSP - paths y redirects</h2>
+        <h2>CSP: Paths y redirecciones</h2>
 
         <blockquote>
           To avoid leaking path information cross-origin, the matching algorithm ignores the path component
@@ -805,11 +842,13 @@
           <small>
             <a href="https://www.w3.org/TR/CSP3/#source-list-paths-and-redirects" target="_blank">
               https://www.w3.org/TR/CSP3/#source-list-paths-and-redirects
+              <i class="fa-solid fa-up-right-from-square"></i>
             </a>
             <br>
             <br>
             <a href="https://homakov.blogspot.de/2014/01/using-content-security-policy-for-evil.html" target="_blank">
               https://homakov.blogspot.de/2014/01/using-content-security-policy-for-evil.html
+              <i class="fa-solid fa-up-right-from-square"></i>
             </a>
           </small>
         </p>
@@ -826,7 +865,10 @@
 
         <p>
           <small>
-            <a href="examples/open-redirect-bypass.html" target="_blank">examples/open-redirect-bypass.html</a>
+            <a href="examples/open-redirect-bypass.html" target="_blank">
+              Ejemplo
+              <i class="fa-solid fa-code"></i>
+            </a>
           </small>
         </p>
 
@@ -842,7 +884,7 @@
 
       <section>
         <h2>¡Open redirect arreglado!</h2>
-        <h3>Y no más CDN público</h3>
+        <h3>¡Y sin más CDN públicos!</h3>
         <pre class=""><code data-trim data-noescape class="http">
           Content-Security-Policy:
             script-src
@@ -854,8 +896,10 @@
 
         <p>
           <small>
-            <a href="examples/open-redirect-bypass-fixed.html"
-              target="_blank">examples/open-redirect-bypass-fixed.html</a>
+            <a href="examples/open-redirect-bypass-fixed.html" target="_blank">
+              Ejemplo
+              <i class="fa-solid fa-code"></i>
+            </a>
           </small>
         </p>
       </section>
@@ -877,7 +921,10 @@
 
         <p>
           <small>
-            <a href="examples/angularjs-is-back.html" target="_blank">examples/angularjs-is-back.html</a>
+            <a href="examples/angularjs-is-back.html" target="_blank">
+              Ejemplo
+              <i class="fa-solid fa-code"></i>
+            </a>
           </small>
         </p>
       </section>
@@ -889,8 +936,10 @@
 
         <p>
           <small>
-            <a href="https://developers.google.com/recaptcha/docs/faq"
-              target="_blank">https://developers.google.com/recaptcha/docs/faq</a>
+            <a href="https://developers.google.com/recaptcha/docs/faq" target="_blank">
+              https://developers.google.com/recaptcha/docs/faq
+              <i class="fa-solid fa-up-right-from-square"></i>
+            </a>
           </small>
         </p>
       </section>
@@ -913,9 +962,15 @@
 
         <p>
           <small>
-            <a href="examples/hash-and-nonce.html" target="_blank">examples/hash-and-nonce.html</a>
+            <a href="examples/hash-and-nonce.html" target="_blank">
+              Ejemplo 1
+              <i class="fa-solid fa-code"></i>
+            </a>
             <br>
-            <a href="examples/hash-and-nonce-in-action.html" target="_blank">examples/hash-and-nonce-in-action.html</a>
+            <a href="examples/hash-and-nonce-in-action.html" target="_blank">
+              Ejemplo 2
+              <i class="fa-solid fa-code"></i>
+            </a>
           </small>
         </p>
       </section>
@@ -935,7 +990,10 @@
         <p>
           <small>
             <a href="https://devdoc.net/web/developer.mozilla.org/en-US/docs/Web/HTML/Element/base.html"
-              target="_blank">https://devdoc.net/web/developer.mozilla.org/en-US/docs/Web/HTML/Element/base.html</a>
+              target="_blank">
+              https://devdoc.net/web/developer.mozilla.org/en-US/docs/Web/HTML/Element/base.html
+              <i class="fa-solid fa-up-right-from-square"></i>
+            </a>
           </small>
         </p>
       </section>
@@ -949,15 +1007,21 @@
 
         <p>
           <small>
-            <a href="examples/base-uri-bypass.html" target="_blank">examples/base-uri-bypass.html</a>
+            <a href="examples/base-uri-bypass.html" target="_blank">
+              Ejemplo 1
+              <i class="fa-solid fa-code"></i>
+            </a>
             <br>
-            <a href="examples/base-uri-bypass-fixed.html" target="_blank">examples/base-uri-bypass-fixed.html</a>
+            <a href="examples/base-uri-bypass-fixed.html" target="_blank">
+              Ejemplo 2
+              <i class="fa-solid fa-code"></i>
+            </a>
           </small>
         </p>
       </section>
 
       <section>
-        <h2>Injection point dentro de &lt;script&gt;</h2>
+        <h2>Punto de inyección dentro de &lt;script&gt;</h2>
 
         <pre class=""><code data-trim data-noescape class="html">
           &lt;script nonce&equals;&quot;abc&quot;&gt;
@@ -967,7 +1031,7 @@
       </section>
 
       <section>
-        <h2>Injection point entre nonce y src</h2>
+        <h2>Punto de inyección entre nonce y src</h2>
 
         <pre class=""><code data-trim data-noescape class="html">
           &lt;script nonce&equals;&quot;abc&quot; &lcub;INJECTION&rcub; src&equals;&quot;good&period;js&quot;&gt;&lt;&sol;script&gt;
@@ -989,7 +1053,7 @@
         <h2>Re-uso de contenido de hashes</h2>
 
         <p>
-          Si la política permite scripts correspondientes a un hash,
+          Si la política permite scripts que coinciden con un hash,
           el atacante también puede hacer uso de esos scripts.
         </p>
 
@@ -1041,8 +1105,10 @@
 
         <p>
           <small>
-            <a href="examples/html-injection-redirection.html"
-              target="_blank">examples/html-injection-redirection.html</a>
+            <a href="examples/html-injection-redirection.html" target="_blank">
+              Ejemplo
+              <i class="fa-solid fa-code"></i>
+            </a>
           </small>
         </p>
       </section>
@@ -1059,12 +1125,16 @@
         </code></pre>
         <p>
           <small>
-            <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Referrer-Policy"
-              target="_blank">https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Referrer-Policy</a>
+            <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Referrer-Policy" target="_blank">
+              https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Referrer-Policy
+              <i class="fa-solid fa-up-right-from-square"></i>
+            </a>
             <br>
             <br>
-            <a href="examples/html-injection-url-exfiltration.html?code=12345"
-              target="_blank">examples/html-injection-url-exfiltration.html</a>
+            <a href="examples/html-injection-url-exfiltration.html?code=12345" target="_blank">
+              Ejemplo
+              <i class="fa-solid fa-code"></i>
+            </a>
           </small>
         </p>
       </section>
@@ -1082,10 +1152,15 @@
         </code></pre>
         <p>
           <small>
-            <a href="examples/html-injection.html" target="_blank">examples/html-injection.html</a>
+            <a href="examples/html-injection.html" target="_blank">
+              Ejemplo 1
+              <i class="fa-solid fa-code"></i>
+            </a>
             <br>
-            <a href="examples/html-injection-content-exfiltration.html"
-              target="_blank">examples/html-injection-content-exfiltration.html</a>
+            <a href="examples/html-injection-content-exfiltration.html" target="_blank">
+              Ejemplo 2
+              <i class="fa-solid fa-code"></i>
+            </a>
           </small>
         </p>
 
@@ -1116,8 +1191,10 @@
 
         <p>
           <small>
-            <a href="examples/html-injection-credentials-exfiltration.html"
-              target="_blank">examples/html-injection-credentials-exfiltration.html</a>
+            <a href="examples/html-injection-credentials-exfiltration.html" target="_blank">
+              Ejemplo
+              <i class="fa-solid fa-code"></i>
+            </a>
           </small>
         </p>
       </section>
@@ -1131,6 +1208,7 @@
           <small>
             <a href="https://en.wikipedia.org/wiki/Principle_of_least_privilege" target="_blank">
               https://en.wikipedia.org/wiki/Principle_of_least_privilege
+              <i class="fa-solid fa-up-right-from-square"></i>
             </a>
           </small>
         </p>
@@ -1186,7 +1264,7 @@
         </p>
 
         <p>
-          Bypassear políticas CSP es una nueva habilidad que debemos aprender,
+          Evadir políticas CSP es una nueva habilidad que debemos aprender
           y también otras maneras creativas de explotación sin ejecutar JavaScript.
         </p>
       </section>
@@ -1345,6 +1423,16 @@
                     <a href="https://book.hacktricks.xyz/pentesting-web/dangling-markup-html-scriptless-injection"
                       target="_blank">
                       https://book.hacktricks.xyz/pentesting-web/dangling-markup-html-scriptless-injection
+                    </a>
+                  </li>
+                  <li>
+                    <a href="https://portswigger.net/web-security/cross-site-scripting/dangling-markup" target="_blank">
+                      https://portswigger.net/web-security/cross-site-scripting/dangling-markup
+                    </a>
+                  </li>
+                  <li>
+                    <a href="https://portswigger.net/web-security/cross-site-scripting/cheat-sheet" target="_blank">
+                      https://portswigger.net/web-security/cross-site-scripting/cheat-sheet
                     </a>
                   </li>
                 </ul>
