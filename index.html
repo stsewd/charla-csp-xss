@@ -144,25 +144,28 @@
         </p>
 
         <aside class="notes">
-          No, pero si la política es lo suficientemente restrictiva,
-          será muy difícil (tal vez imposible) llevar a cabo un ataque XSS.
-          Pero aún así, existen varios bypasses que pueden ser explotados.
+          Spoiler alert: No, pero si la política es lo suficientemente restrictiva,
+          será difícil, pero no siempre imposible llevar acabo un ataque XSS.
+
           Usualmente cuando existe una vulnerabilidad XSS,
           es debido a que un atacante puede inyectar código HTML en el sitio,
           y eso aún tiene impacto en la seguridad de la página, y no es algo que CSP pueda prevenir
           (aún).
 
-          Si no entendieron nada de lo que dije, no se preocupen, vamos
-          a ver más en detalle por qué he llegado a esta conclusión.
+          Ya está la respuesta, pero la charla aún no es el final de la charla,
+          apenas estamos comenzando.
+
+          Si quieren saber cómo implementar una política restrictiva,
+          o hacer bypasses, o generar impacto sin ejecutar JS,
+          pues para eso si deben quedarse hasta el final.
         </aside>
       </section>
 
       <section>
         <h2>$ WHOAMI</h2>
         <ul>
-          <li>Web developer</li>
+          <li>Web developer <i class="fab fa-python"></i></li>
           <li>Ethical hacker</li>
-          <li><i class="fab fa-python"></i> <i class="fab fa-rust"></i></li>
           <li>
             @stsewd - <a href="https://stsewd.dev/" target="_blank">https://stsewd.dev/</a>
           </li>
@@ -172,11 +175,11 @@
           <img src="img/rtd-logo-vertical.png" height="75px">
         </p>
         <aside class="notes">
-          Hola, soy Santos Gallegos, soy desarrollador web, y hacker ético.
-          Contribuyo activamente a proyectos open source,
+          Hola, soy Santos Gallegos, soy desarrollador web, y hacker ético,
+          principalmente trabajo con Python.
+          Contribuyo a proyectos open source cuando tengo tiempo,
           y he reportado vulnerabilidades en varios proyectos dentro y fuera de mi trabajo,
-          como Neovim, GitPython, django-allauth, Read the Docs, Sentry, y un montón más.
-          Principalmente trabajo con Python y Rust.
+          como Neovim, GitPython, django-allauth, Read the Docs, Sentry, y más.
           Actualmente trabajo en Read the Docs, soy core developer.
           De vez en cuando también hago bug bounty.
           Me pueden encontrar en Internet como @stsewd.
@@ -204,7 +207,7 @@
           <li>En el trabajo me tocó iniciar la implementación de CSP</li>
           <li>Bug bounty: XSS en una web con CSP usando nonces. No pude ejecutar JS, pero pude demostrar impacto</li>
           <li>
-            Bug bounty: XSS en una web con CSP, muy restrictiva pero sin nonces. Pude hacer un bypass y ejeuctar JS
+            Bug bounty: XSS en una web con CSP, muy restrictiva pero sin nonces. Pude hacer un bypass y ejecutar JS
           </li>
           <li>Esta charla</li>
         </ul>
@@ -212,7 +215,7 @@
         <aside class="notes">
           No, mi experiencia con CSP es algo así.
           Había escuchado sobre CSP, tenía una idea muy básica de lo que era, y cómo funcionaba.
-          Luego en el trabajo me tocó iniciar la implementación de CSP en nuestra web, en modo report-only, por ahora.
+          Luego en el trabajo me tocó iniciar la implementación de CSP en nuestra web.
           Para ello tuve que investigar más sobre CSP, y los errores y bypasses más comunes.
 
           Y coincidentemente, unas semanas después, encontré un stored XSS en un web de un programa de bug bounty.
@@ -482,74 +485,8 @@
       </section>
 
       <section>
-        <h2>¿HTML injection?</h2>
-
-        <pre class=""><code data-trim data-noescape class="python">
-          @register.filter
-          def gravatar(user):
-              img = get_gravatar_image(user.email)
-              return mark_safe(f'&lt;img src="{img}" alt="{user.email}"&gt;')
-        </code></pre>
-      </section>
-
-      <section>
-        <h2>Email address</h2>
-
-        <p>
-          &lt;script&gt;alert(document.domain)&lt;/script&gt;@example.com
-        </p>
-
-        <img src="img/django-email-validator-invalid.png" class="r-stretch">
-
-        <aside class="notes">
-          Esta dirección de correo electrónico no es válida.
-        </aside>
-      </section>
-
-      <section>
         <h2>El atacante</h2>
         <img src="img/script-kiddie.jpg" alt="" class="r-stretch">
-      </section>
-
-      <section>
-        <h2>Email address 101</h2>
-
-        <p>
-          local-part@domain
-        </p>
-
-        <blockquote>
-          The local-part of the email address may be unquoted or may be enclosed in quotation marks.
-        </blockquote>
-
-        <p>
-          <small>
-            <a href="https://en.wikipedia.org/wiki/Email_address" target="_blank">
-              https://en.wikipedia.org/wiki/Email_address
-              <i class="fa-solid fa-up-right-from-square"></i>
-            </a>
-          </small>
-        </p>
-      </section>
-
-      <section>
-        <h2>HTML injection</h2>
-
-        <p>"&lt;script&gt;alert(document.domain)&lt;/script&gt;"@example.com</p>
-
-        <img src="img/django-email-validator-valid.png" class="r-stretch">
-
-        <p>
-          <strong>
-            Soportan quoted-string como local-part:
-          </strong>
-        </p>
-
-        <ul>
-          <li>validator.js</li>
-          <li>Django</li>
-        </ul>
-
       </section>
 
       <section>
@@ -1304,6 +1241,7 @@
               @stsewd
               <a href="http://github.com/stsewd" target="_blank"><i class="fab fa-github"></i></a>
               <a href="http://twitter.com/stsewd" target="_blank"><i class="fab fa-twitter"></i></a>
+              <a href="https://www.linkedin.com/in/stsewd/" target="_blank"><i class="fab fa-linkedin"></i></a>
               -
               <a href="https://stsewd.dev" target="_blank">https://stsewd.dev</a>
             </small>
