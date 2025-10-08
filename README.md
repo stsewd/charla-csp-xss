@@ -1,6 +1,6 @@
 # Content Security Policy (CSP): ¿El fin de XSS?
 
-Slides de la charla dada en {evento} el {fecha}.
+Slides de la charla dada en el evento "pwn or die" organizado por "revers3everything" el 26 de Julio de 2025.
 
 ## Dependencias
 
